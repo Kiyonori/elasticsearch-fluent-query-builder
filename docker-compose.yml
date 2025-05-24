@@ -1,0 +1,36 @@
+services:
+  php:
+    build:
+      context: ./docker-containers/php
+      args:
+        APP_USER_ID: ${APP_USER_ID}
+        APP_USER_NAME: ${APP_USER_NAME}
+    volumes:
+      - ./src:/var/www/src
+      - ./docker-containers/php/mount/usr/local/etc/php/php.ini:/usr/local/etc/php/php.ini:ro
+      - ./docker-containers/php/mount/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini:/usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini:ro
+    networks:
+      - elasticsearch-fluent-query-builder-123123
+    restart: unless-stopped
+
+  elasticsearch:
+    build:
+      context: docker-containers/elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - ${ELASTICSEARCH_OUTWARD_PORT}:9200
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    networks:
+      - elasticsearch-fluent-query-builder-123123
+    restart: unless-stopped
+
+networks:
+  elasticsearch-fluent-query-builder-123123:
+    driver: bridge
+
+volumes:
+  elasticsearch-data:

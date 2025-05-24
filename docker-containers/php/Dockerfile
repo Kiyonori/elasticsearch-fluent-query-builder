@@ -25,4 +25,4 @@ RUN pecl install xdebug \
 
 USER ${APP_USER_NAME}
 
-WORKDIR /var/www/src
+WORKDIR /var/www/elasticsearch-fluent-query-builder/src

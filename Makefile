@@ -10,3 +10,6 @@ up:
 
 	docker compose build
 	docker compose up -d
+
+test:
+	docker-compose exec php vendor/bin/phpunit

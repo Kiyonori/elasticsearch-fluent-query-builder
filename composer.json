@@ -4,6 +4,11 @@
             "Kiyonori\\ElasticsearchFluentQueryBuilder\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
     "require-dev": {
         "phpunit/phpunit": "^12.1"
     },

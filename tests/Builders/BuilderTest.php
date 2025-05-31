@@ -25,7 +25,6 @@ class BuilderTest extends TestCase
             ->toArray();
 
         $this->assertSame(
-            $result,
             [
                 [
                     'term' => [
@@ -63,7 +62,8 @@ class BuilderTest extends TestCase
                         ],
                     ],
                 ],
-            ]
+            ],
+            $result,
         );
     }
 }

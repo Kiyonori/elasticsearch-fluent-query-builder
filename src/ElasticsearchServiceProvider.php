@@ -10,7 +10,7 @@ class ElasticsearchServiceProvider extends ServiceProvider
     {
         $this->publishes(
             [
-                __DIR__ . '/../config/my-elasticsearch' => config_path('my-elasticsearch.php'),
+                __DIR__ . '/../config/my-elasticsearch.php' => config_path('my-elasticsearch.php'),
             ],
             'my-elasticsearch'
         );
@@ -19,7 +19,7 @@ class ElasticsearchServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/my-elasticsearch',
+            __DIR__ . '/../config/my-elasticsearch.php',
             'my-elasticsearch'
         );
     }

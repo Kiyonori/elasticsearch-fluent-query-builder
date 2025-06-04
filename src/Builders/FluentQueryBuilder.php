@@ -42,43 +42,21 @@ final class FluentQueryBuilder
                             ? $this->filters
                             :Nothing::make(),
 
-                        'should'               => when(
-                            condition: ! empty($this->should),
-                            value: fn() => $this->should,
-                            default: Nothing::make(),
-                        ),
-                        'minimum_should_match' => when(
-                            condition: isset($this->minimumShouldMatch),
-                            value: fn() => $this->minimumShouldMatch,
-                            default: Nothing::make(),
-                        ),
-                        'must_not'             => when(
-                            condition: ! empty($this->mustNot),
-                            value: fn() => $this->mustNot,
-                            default: Nothing::make(),
-                        ),
+                        'should' => ! empty($this->should)
+                            ? $this->should
+                            :Nothing::make(),
+
+                        'minimum_should_match' => $this->minimumShouldMatch ?? Nothing::make(),
+
+                        'must_not' => ! empty($this->mustNot)
+                            ? $this->mustNot
+                            :Nothing::make(),
                     ],
                 ],
-                'from'         => when(
-                    condition: isset($this->from),
-                    value: fn() => $this->from,
-                    default: Nothing::make(),
-                ),
-                'size'         => when(
-                    condition: isset($this->size),
-                    value: fn() => $this->size,
-                    default: Nothing::make(),
-                ),
-                'search_after' => when(
-                    condition: isset($this->searchAfters),
-                    value: fn() => $this->searchAfters,
-                    default: Nothing::make(),
-                ),
-                'sort'         => when(
-                    condition: isset($this->sorts),
-                    value: fn() => $this->sorts,
-                    default: Nothing::make(),
-                ),
+                'from'         => $this->from ?? Nothing::make(),
+                'size'         => $this->size ?? Nothing::make(),
+                'search_after' => $this->searchAfters ?? Nothing::make(),
+                'sort'         => $this->sorts ?? Nothing::make(),
             ],
         ];
 

@@ -60,8 +60,9 @@ final class FluentQueryBuilder
             ],
         ];
 
-        // TODO `Nothing` を持つ要素を取り除いてから return する
-        return [];
+        return (new UnsetNothingKeyInArray)->execute(
+            $structure
+        );
     }
 
     public function must(Closure $callback): self

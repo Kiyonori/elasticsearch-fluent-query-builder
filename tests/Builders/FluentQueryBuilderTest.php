@@ -264,4 +264,17 @@ class FluentQueryBuilderTest extends TestCase
             actual: $result,
         );
     }
+
+    public function test_全パラメータ空っぽの場合にて_toArray_メソッドで意図したクエリの形が組み立てられること()
+    {
+        $searchQuery = new FluentQueryBuilder;
+
+        $result = $searchQuery
+            ->toArray();
+
+        $this->assertSame(
+            expected: [],
+            actual: $result,
+        );
+    }
 }

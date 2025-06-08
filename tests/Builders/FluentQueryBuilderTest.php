@@ -223,4 +223,45 @@ class FluentQueryBuilderTest extends TestCase
             actual: $result,
         );
     }
+
+    public function test_from_検索条件を含めて_toArray_メソッドを呼んだ場合、意図したクエリの形が組み立てられること()
+    {
+        $searchQuery = new FluentQueryBuilder;
+
+        $result = $searchQuery
+            ->filter(function (Builder $filter) {
+                $filter
+                    ->term('chat_id', 'u968edd043c46262efe69ef21ad458c6d')
+                    ->term('type', 1);
+            })
+            ->from(offset: 3)
+            ->size(10)
+            ->toArray();
+
+        $this->assertSame(
+            expected: [
+                'body' => [
+                    'query' => [
+                        'bool' => [
+                            'filter' => [
+                                [
+                                    'term' => [
+                                        'chat_id' => 'u968edd043c46262efe69ef21ad458c6d',
+                                    ],
+                                ],
+                                [
+                                    'term' => [
+                                        'type' => 1,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                    'from'  => 3,
+                    'size'  => 10,
+                ],
+            ],
+            actual: $result,
+        );
+    }
 }

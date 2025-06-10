@@ -20,6 +20,8 @@ final class FluentQueryBuilder
 
     private array $mustNot = [];
 
+    private array $highlight = [];
+
     private ?int $from = null;
 
     private ?int $size = null;
@@ -32,7 +34,7 @@ final class FluentQueryBuilder
     {
         $structure = [
             'body' => [
-                'query'        => [
+                'query' => [
                     'bool' => [
                         'must' => ! empty($this->must)
                             ? $this->must
@@ -53,6 +55,11 @@ final class FluentQueryBuilder
                             :Nothing::make(),
                     ],
                 ],
+
+                'highlight' => ! empty($this->highlight)
+                    ? $this->highlight
+                    :Nothing::make(),
+
                 'from'         => $this->from ?? Nothing::make(),
                 'size'         => $this->size ?? Nothing::make(),
                 'search_after' => $this->searchAfters ?? Nothing::make(),
@@ -124,6 +131,34 @@ final class FluentQueryBuilder
             $this->mustNot,
             $builder->toArray(),
         );
+
+        return $this;
+    }
+
+    /**
+     * @param  string[]  $preTags
+     * @param  string[]  $postTags
+     */
+    public function highlight(
+        Closure $callback,
+        array $preTags = [],
+        array $postTags = [],
+    ): self {
+        $highlight = new Highlight;
+
+        $callback($highlight);
+
+        $this->highlight = [
+            'pre_tags' => ! empty($preTags)
+                ? $preTags
+                :Nothing::make(),
+
+            'post_tags' => ! empty($postTags)
+                ? $postTags
+                :Nothing::make(),
+
+            'fields' => $highlight->toArray(),
+        ];
 
         return $this;
     }

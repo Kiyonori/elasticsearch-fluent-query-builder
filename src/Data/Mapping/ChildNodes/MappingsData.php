@@ -11,8 +11,28 @@ final readonly class MappingsData
     public function __construct(
         array $mappings
     ) {
-        $this->properties = json_decode(
-            json_encode($mappings['properties'])
+        $this->properties = $this->arrayToStdClass(
+            $mappings['properties'],
         );
+    }
+
+    /**
+     * ネストされた array を再帰的に stdClass にキャストする
+     */
+    private function arrayToStdClass(
+        array $data,
+    ): stdClass {
+        $stdClass = new stdClass;
+
+        foreach ($data as $key => $datum) {
+            if ( ! is_array($datum)) {
+                $stdClass->$key = $datum;
+                continue;
+            }
+
+            $stdClass->$key = $this->arrayToStdClass($datum);
+        }
+
+        return $stdClass;
     }
 }

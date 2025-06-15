@@ -118,4 +118,54 @@ class JsonDataTest extends TestCase
                 ->type,
         );
     }
+
+    public function test_JsonDataのtoArrayメソッドを呼ぶことで、隅々の要素までarrayにキャストされた内容が返ってくること()
+    {
+        $dataTransferObject = new JsonData(
+            index: 'chat_histories',
+            body: [
+                "mappings" => [
+                    "properties" => [
+                        "pk" => [
+                            "type" => "long",
+                        ],
+
+                        "id" => [
+                            "type" => "long",
+                        ],
+
+                        "server_id" => [
+                            "type"         => "keyword",
+                            "ignore_above" => 256,
+                        ],
+
+                        "type" => [
+                            "type" => "byte",
+                        ],
+                    ],
+                ],
+            ],
+        );
+
+        $this->assertSame(
+            expected: [
+                'body'  => [
+                    'mappings' => [
+                        'properties' => [
+                            'pk'        => ['type' => 'long'],
+                            'id'        => ['type' => 'long'],
+                            'server_id' => [
+                                'type'         => 'keyword',
+                                'ignore_above' => 256,
+                            ],
+                            'type'      => ['type' => 'byte'],
+                        ],
+                    ],
+                ],
+                'index' => 'chat_histories',
+            ],
+
+            actual: $dataTransferObject->toArray(),
+        );
+    }
 }

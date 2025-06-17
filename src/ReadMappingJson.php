@@ -20,11 +20,9 @@ final readonly class ReadMappingJson
             associative: true,
         );
 
-        $jsonData = new JsonData(
+        return new JsonData(
             $mappings['index'],
             $mappings['body'],
         );
-
-        return $jsonData;
     }
 }

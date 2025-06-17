@@ -1,0 +1,98 @@
+{
+    "index": "chat_histories",
+    "body": {
+        "mappings": {
+            "properties": {
+                "pk": {
+                    "type": "long"
+                },
+                "id": {
+                    "type": "long"
+                },
+                "server_id": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                },
+                "type": {
+                    "type": "byte"
+                },
+                "chat_id": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                },
+                "from_mid": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                },
+                "content": {
+                    "type": "text",
+                    "analyzer": "kuromoji"
+                },
+                "created_time": {
+                    "type": "long"
+                },
+                "delivered_time": {
+                    "type": "long"
+                },
+                "status": {
+                    "type": "byte"
+                },
+                "sent_count": {
+                    "type": "integer"
+                },
+                "read_count": {
+                    "type": "integer"
+                },
+                "location_name": {
+                    "type": "text",
+                    "analyzer": "kuromoji"
+                },
+                "location_address": {
+                    "type": "text",
+                    "analyzer": "kuromoji"
+                },
+                "location_phone": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                },
+                "location_latitude": {
+                    "type": "integer"
+                },
+                "location_longitude": {
+                    "type": "integer"
+                },
+                "attachement_image": {
+                    "type": "integer"
+                },
+                "attachement_image_height": {
+                    "type": "integer"
+                },
+                "attachement_image_width": {
+                    "type": "integer"
+                },
+                "attachement_image_size": {
+                    "type": "integer"
+                },
+                "attachement_type": {
+                    "type": "byte"
+                },
+                "attachement_local_uri": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                },
+                "parameter": {
+                    "type": "text"
+                },
+                "created_at": {
+                    "type": "date"
+                },
+                "updated_at": {
+                    "type": "date"
+                },
+                "deleted_at": {
+                    "type": "date"
+                }
+            }
+        }
+    }
+}

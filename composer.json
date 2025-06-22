@@ -2,7 +2,10 @@
     "autoload": {
         "psr-4": {
             "Kiyonori\\ElasticsearchFluentQueryBuilder\\": "src/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

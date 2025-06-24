@@ -2,6 +2,7 @@
 
 namespace Kiyonori\ElasticsearchFluentQueryBuilder;
 
+use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Exception\AuthenticationException;
 use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Elastic\Elasticsearch\Exception\ServerResponseException;
@@ -22,7 +23,8 @@ final readonly class GetConcreteIndexNames
         string $aliasIndexName,
         bool $suppressNotFoundException = false,
     ): array {
-        $client = new PrepareElasticsearchClient()
+        /** @var Client $client */
+        $client = app(PrepareElasticsearchClient::class)
             ->execute();
 
         try {

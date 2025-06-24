@@ -8,7 +8,8 @@ final readonly class BodyData
 
     public function __construct(array $body)
     {
-        $this->mappings = new MappingsData(
+        $this->mappings = app(
+            MappingsData::class,
             mappings: $body['mappings']
         );
     }

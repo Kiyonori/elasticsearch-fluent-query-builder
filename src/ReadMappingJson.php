@@ -20,7 +20,8 @@ final readonly class ReadMappingJson
             associative: true,
         );
 
-        return new JsonData(
+        return app(
+            JsonData::class,
             $mappings['index'],
             $mappings['body'],
         );

@@ -2,6 +2,7 @@
 
 namespace Kiyonori\ElasticsearchFluentQueryBuilder;
 
+use Elastic\Elasticsearch\Client;
 use Elastic\Elasticsearch\Exception\AuthenticationException;
 use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Elastic\Elasticsearch\Exception\MissingParameterException;
@@ -22,7 +23,8 @@ final readonly class CheckIndexExists
     public function execute(
         string $indexName,
     ): bool {
-        $client = (new PrepareElasticsearchClient)
+        /** @var Client $client */
+        $client = app(PrepareElasticsearchClient::class)
             ->execute();
 
         return $client

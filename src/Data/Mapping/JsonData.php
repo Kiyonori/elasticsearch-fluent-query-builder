@@ -12,9 +12,8 @@ final readonly class JsonData
         public string $index,
         array $body,
     ) {
-        $this->body = app(
-            BodyData::class,
-            body: $body,
+        $this->body = new BodyData(
+            body: $body
         );
     }
 

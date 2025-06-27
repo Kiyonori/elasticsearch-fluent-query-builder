@@ -48,3 +48,13 @@
         return $configFileContent;
     }
 })();
+
+(function(){
+    if (function_exists('now')) {
+        return;
+    }
+
+    function now(): DateTime {
+        return new DateTime;
+    }
+})();

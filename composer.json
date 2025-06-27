@@ -16,6 +16,8 @@
         "phpunit/phpunit": "^12.1"
     },
     "require": {
+        "php": "^8.2",
+        "ext-date": "*",
         "elasticsearch/elasticsearch": "^8.17"
     },
     "config": {

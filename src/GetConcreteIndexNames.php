@@ -3,6 +3,7 @@
 namespace Kiyonori\ElasticsearchFluentQueryBuilder;
 
 use Elastic\Elasticsearch\Client;
+use Elastic\Elasticsearch\Exception\AuthenticationException;
 use Elastic\Elasticsearch\Exception\ClientResponseException;
 use Elastic\Elasticsearch\Exception\ServerResponseException;
 
@@ -14,14 +15,18 @@ final readonly class GetConcreteIndexNames
      * @param  string  $aliasIndexName  エイリアスとしてのインデックス名
      * @return string[] 実際のインデックス名 (複数ありうるので array です)
      *
-     * @throws ServerResponseException
+     * @throws AuthenticationException
      * @throws ClientResponseException
+     * @throws ServerResponseException
      */
     public function execute(
-        Client $client,
         string $aliasIndexName,
         bool $suppressNotFoundException = false,
     ): array {
+        /** @var Client $client */
+        $client = app(PrepareElasticsearchClient::class)
+            ->execute();
+
         try {
             $response = $client
                 ->indices()

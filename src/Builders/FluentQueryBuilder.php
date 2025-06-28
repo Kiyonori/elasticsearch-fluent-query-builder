@@ -67,14 +67,15 @@ final class FluentQueryBuilder
             ],
         ];
 
-        return (new UnsetNothingKeyInArray)->execute(
+        return app(UnsetNothingKeyInArray::class)->execute(
             $structure
         );
     }
 
     public function must(Closure $callback): self
     {
-        $builder = new Builder;
+        /** @var Builder $builder */
+        $builder = app(Builder::class);
 
         $callback($builder);
 
@@ -88,7 +89,8 @@ final class FluentQueryBuilder
 
     public function filter(Closure $callback): self
     {
-        $builder = new Builder;
+        /** @var Builder $builder */
+        $builder = app(Builder::class);
 
         $callback($builder);
 
@@ -102,7 +104,8 @@ final class FluentQueryBuilder
 
     public function should(Closure $callback): self
     {
-        $builder = new Builder;
+        /** @var Builder $builder */
+        $builder = app(Builder::class);
 
         $callback($builder);
 
@@ -123,7 +126,8 @@ final class FluentQueryBuilder
 
     public function mustNot(Closure $callback): self
     {
-        $builder = new Builder;
+        /** @var Builder $builder */
+        $builder = app(Builder::class);
 
         $callback($builder);
 

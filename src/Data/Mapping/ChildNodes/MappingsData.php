@@ -22,7 +22,7 @@ final readonly class MappingsData
     private function arrayToStdClass(
         array $data,
     ): stdClass {
-        $stdClass = new stdClass;
+        $stdClass = app(stdClass::class);
 
         foreach ($data as $key => $datum) {
             if ( ! is_array($datum)) {

@@ -11,7 +11,7 @@ final class StaticStd
     public static function instance(): stdClass
     {
         if (! isset(self::$instance)) {
-            self::$instance = new stdClass;
+            self::$instance = app(stdClass::class);
         }
 
         return self::$instance;

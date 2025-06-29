@@ -30,9 +30,6 @@ final readonly class ApplyMapping
             associative: true,
         );
 
-        //var_dump($mapping);
-        //exit;
-
         /** @var Client $client */
         $client = app(PrepareElasticsearchClient::class)
             ->execute();

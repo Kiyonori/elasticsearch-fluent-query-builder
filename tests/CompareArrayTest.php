@@ -23,4 +23,25 @@ class CompareArrayTest extends TestCase
             actual: $result,
         );
     }
+
+    function test_2つの配列を比較し、差異のある部分が配列として返ってくること()
+    {
+        $result = app(CompareArray::class)->execute(
+            current: [
+                'a' => 111,
+                'b' => 222,
+            ],
+            new: [
+                'a' => 111,
+                'b' => 223, // 👀 ここに注目❗️
+            ],
+        );
+
+        $this->assertSame(
+            expected: [
+                'b' => 223,
+            ],
+            actual: $result,
+        );
+    }
 }

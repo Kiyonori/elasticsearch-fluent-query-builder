@@ -44,4 +44,23 @@ class CompareArrayTest extends TestCase
             actual: $result,
         );
     }
+
+    public function test_2つの配列を比較し、＄new_側の1階層目に欠けているキーがあっても無視され、差分として検知されないこと()
+    {
+        $result = app(CompareArray::class)->execute(
+            current: [
+                'a' => 111,
+                'b' => 222,
+            ],
+            new: [
+                'a' => 111,
+                // 'b' => 222, // 👀 ここに注目❗️
+            ],
+        );
+
+        $this->assertSame(
+            expected: [],
+            actual: $result,
+        );
+    }
 }

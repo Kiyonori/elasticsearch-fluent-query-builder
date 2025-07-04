@@ -45,7 +45,8 @@ class CompareArrayTest extends TestCase
         );
     }
 
-    public function test_2つの配列を比較し、＄new_側の1階層目に欠けているキーがあっても無視され、差分として検知されないこと()
+    public function test_2つの配列を比較し、＄new_側の1階層目に欠けているキーがあっても無視され、差分として検知されないこと(
+    )
     {
         $result = app(CompareArray::class)->execute(
             current: [
@@ -75,6 +76,33 @@ class CompareArrayTest extends TestCase
                 'a' => 111,
                 'b' => 222,
                 'c' => 333, // 👀 ここに注目❗️
+            ],
+        );
+
+        $this->assertSame(
+            expected: [],
+            actual: $result,
+        );
+    }
+
+    public function test_ネストされた配列同士の比較_＄current_と_＄new_の内容がまったく同じである場合、全く同じであることを意味する「空っぽの配列」が返ってくること()
+    {
+        $result = app(CompareArray::class)->execute(
+            current: [
+                'a' => 111,
+                'b' => [
+                    'bb1' => 'あ',
+                    'bb2' => 'か',
+                ],
+                'c' => 333,
+            ],
+            new: [
+                'a' => 111,
+                'b' => [
+                    'bb1' => 'あ',
+                    'bb2' => 'か',
+                ],
+                'c' => 333,
             ],
         );
 

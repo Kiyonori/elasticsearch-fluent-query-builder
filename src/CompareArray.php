@@ -46,10 +46,7 @@ final readonly class CompareArray
 
             // ココに到達した時点で $currentItem と $new[$key] の両方は is_array である
 
-            $currentJson = json_encode($currentItem);
-            $newJson     = json_encode($new[$key]);
-
-            if ($currentJson === $newJson) {
+            if ($currentItem === $new[$key]) {
                 continue;
             }
 

@@ -29,7 +29,7 @@ final readonly class BulkStoreDocuments
         $params = [];
 
         foreach ($items as $item) {
-            $param['_index'] = $indexName;
+            $param = ['_index' => $indexName];
 
             if ($idColumnName !== null) {
                 $param['_id'] = (string) $item[$idColumnName];

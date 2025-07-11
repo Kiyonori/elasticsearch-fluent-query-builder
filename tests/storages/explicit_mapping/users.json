@@ -1,0 +1,20 @@
+{
+    "index": "users",
+    "body": {
+        "mappings": {
+            "properties": {
+                "id": {
+                    "type": "long"
+                },
+                "chat_id": {
+                    "type": "keyword",
+                    "ignore_above": 256
+                },
+                "content": {
+                    "type": "text",
+                    "analyzer": "kuromoji"
+                }
+            }
+        }
+    }
+}

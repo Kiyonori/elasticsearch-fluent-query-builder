@@ -12,4 +12,4 @@ up:
 	docker compose up -d
 
 test:
-	docker-compose exec php vendor/bin/phpunit
+	docker-compose exec php vendor/bin/pest

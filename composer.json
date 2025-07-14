@@ -1,4 +1,14 @@
 {
+    "name": "kiyonori/elasticsearch-fluent-query-builder",
+    "description": "Elasticsearch Fluent Query Builder.",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Kiyonori SAKAI ❄️",
+            "email": "neco.am@gmail.com"
+        }
+    ],
     "autoload": {
         "psr-4": {
             "Kiyonori\\ElasticsearchFluentQueryBuilder\\": "src/"

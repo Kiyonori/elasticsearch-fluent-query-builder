@@ -53,5 +53,10 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
+      - name: Check Elasticsearch availability
+        run: |
+          echo "Checking Elasticsearch availability at elasticsearch:9200..."
+          curl --retry 10 --retry-connrefused --silent --show-error elasticsearch:9200
+
       - name: Run test suite
         run: vendor/bin/pest

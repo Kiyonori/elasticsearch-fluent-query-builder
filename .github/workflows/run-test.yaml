@@ -53,6 +53,9 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
+      - name: Replace elasticsearch host with localhost
+        run: sed -i 's#http://elasticsearch:9200#http://localhost:9200#g' config/my-elasticsearch.php
+
       - name: Wait for Elasticsearch via localhost
         run: |
           echo "Waiting for Elasticsearch at localhost:9200..."

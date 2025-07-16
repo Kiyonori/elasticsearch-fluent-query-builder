@@ -25,8 +25,9 @@ final readonly class MappingsData
         $stdClass = app(stdClass::class);
 
         foreach ($data as $key => $datum) {
-            if ( ! is_array($datum)) {
+            if (! is_array($datum)) {
                 $stdClass->$key = $datum;
+
                 continue;
             }
 

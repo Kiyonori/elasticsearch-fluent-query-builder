@@ -37,6 +37,7 @@ final readonly class JsonData
 
             if ($isPrimitive) {
                 $output[$key] = $property;
+
                 continue;
             }
 

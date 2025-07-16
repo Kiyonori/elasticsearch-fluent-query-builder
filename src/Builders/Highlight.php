@@ -28,11 +28,11 @@ final class Highlight
         $this->field[$fieldName] = [
             'fragment_size' => is_int($fragmentSize)
                 ? $fragmentSize
-                :Nothing::make(),
+                : Nothing::make(),
 
             'number_of_fragments' => is_int($numberOfFragments)
                 ? $numberOfFragments
-                :Nothing::make(),
+                : Nothing::make(),
         ];
 
         return $this;

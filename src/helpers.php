@@ -25,7 +25,7 @@
         $keys           = explode('.', $key);
         $configFilePath = __DIR__ . "/../config/$keys[0]" . '.php';
 
-        if ( ! file_exists($configFilePath)) {
+        if (! file_exists($configFilePath)) {
             return $default;
         }
 
@@ -34,11 +34,11 @@
         array_shift($keys);
 
         foreach ($keys as $segment) {
-            if ( ! is_array($configFileContent)) {
+            if (! is_array($configFileContent)) {
                 return $default;
             }
 
-            if ( ! array_key_exists($segment, $configFileContent)) {
+            if (! array_key_exists($segment, $configFileContent)) {
                 return $default;
             }
 
@@ -49,12 +49,13 @@
     }
 })();
 
-(function(){
+(function () {
     if (function_exists('now')) {
         return;
     }
 
-    function now(): DateTime {
+    function now(): DateTime
+    {
         return new DateTime;
     }
 })();

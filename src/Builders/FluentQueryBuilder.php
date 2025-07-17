@@ -38,27 +38,27 @@ final class FluentQueryBuilder
                     'bool' => [
                         'must' => ! empty($this->must)
                             ? $this->must
-                            :Nothing::make(),
+                            : Nothing::make(),
 
                         'filter' => ! empty($this->filters)
                             ? $this->filters
-                            :Nothing::make(),
+                            : Nothing::make(),
 
                         'should' => ! empty($this->should)
                             ? $this->should
-                            :Nothing::make(),
+                            : Nothing::make(),
 
                         'minimum_should_match' => $this->minimumShouldMatch ?? Nothing::make(),
 
                         'must_not' => ! empty($this->mustNot)
                             ? $this->mustNot
-                            :Nothing::make(),
+                            : Nothing::make(),
                     ],
                 ],
 
                 'highlight' => ! empty($this->highlight)
                     ? $this->highlight
-                    :Nothing::make(),
+                    : Nothing::make(),
 
                 'from'         => $this->from ?? Nothing::make(),
                 'size'         => $this->size ?? Nothing::make(),
@@ -155,11 +155,11 @@ final class FluentQueryBuilder
         $this->highlight = [
             'pre_tags' => ! empty($preTags)
                 ? $preTags
-                :Nothing::make(),
+                : Nothing::make(),
 
             'post_tags' => ! empty($postTags)
                 ? $postTags
-                :Nothing::make(),
+                : Nothing::make(),
 
             'fields' => $highlight->toArray(),
         ];

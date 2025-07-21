@@ -1,155 +1,82 @@
 <?php
 
-namespace Tests\Data\Mapping;
-
 use Kiyonori\ElasticsearchFluentQueryBuilder\Data\Mapping\ChildNodes\BodyData;
 use Kiyonori\ElasticsearchFluentQueryBuilder\Data\Mapping\ChildNodes\MappingsData;
 use Kiyonori\ElasticsearchFluentQueryBuilder\Data\Mapping\JsonData;
-use PHPUnit\Framework\TestCase;
-use stdClass;
 
-class JsonDataTest extends TestCase
-{
-    public function test_JsonDataのコンストラクタに値を渡すことで、Data_Transfer_Objectが出来上がること()
-    {
+test('JsonDataのコンストラクタに値を渡すことで、Data Transfer Objectが出来上がること',
+    function () {
         $result = new JsonData(
             index: 'chat_histories',
             body: [
-                "mappings" => [
-                    "properties" => [
-                        "pk" => [
-                            "type" => "long",
+                'mappings' => [
+                    'properties' => [
+                        'pk' => [
+                            'type' => 'long',
                         ],
 
-                        "id" => [
-                            "type" => "long",
+                        'id' => [
+                            'type' => 'long',
                         ],
 
-                        "server_id" => [
-                            "type"         => "keyword",
-                            "ignore_above" => 256,
+                        'server_id' => [
+                            'type'         => 'keyword',
+                            'ignore_above' => 256,
                         ],
 
-                        "type" => [
-                            "type" => "byte",
+                        'type' => [
+                            'type' => 'byte',
                         ],
                     ],
                 ],
             ],
         );
 
-        $this->assertInstanceOf(
-            expected: JsonData::class,
-            actual: $result,
-        );
-
-        $this->assertSame(
-            expected: 'chat_histories',
-            actual: $result->index,
-        );
-
-        $this->assertInstanceOf(
-            expected: BodyData::class,
-            actual: $result->body,
-        );
-
-        $this->assertInstanceOf(
-            expected: MappingsData::class,
-            actual: $result
-                ->body
-                ->mappings,
-        );
-
-        $this->assertInstanceOf(
-            expected: stdClass::class,
-            actual: $result
-                ->body
-                ->mappings
-                ->properties,
-        );
-
-        $this->assertSame(
-            expected: 'long',
-            actual: $result
-                ->body
-                ->mappings
-                ->properties
-                ->pk
-                ->type,
-        );
-
-        $this->assertSame(
-            expected: 'long',
-            actual: $result
-                ->body
-                ->mappings
-                ->properties
-                ->id
-                ->type,
-        );
-
-        $this->assertSame(
-            expected: 'keyword',
-            actual: $result
-                ->body
-                ->mappings
-                ->properties
-                ->server_id
-                ->type,
-        );
-
-        $this->assertSame(
-            expected: 256,
-            actual: $result
-                ->body
-                ->mappings
-                ->properties
-                ->server_id
-                ->ignore_above,
-        );
-
-        $this->assertSame(
-            expected: 'byte',
-            actual: $result
-                ->body
-                ->mappings
-                ->properties
-                ->type
-                ->type,
-        );
+        expect($result)
+            ->toBeInstanceOf(JsonData::class)
+            ->and($result->index)->toBe('chat_histories')
+            ->and($result->body)->toBeInstanceOf(BodyData::class)
+            ->and($result->body->mappings)->toBeInstanceOf(MappingsData::class)
+            ->and($result->body->mappings->properties)->toBeInstanceOf(stdClass::class)
+            ->and($result->body->mappings->properties->pk->type)->toBe('long')
+            ->and($result->body->mappings->properties->id->type)->toBe('long')
+            ->and($result->body->mappings->properties->server_id->type)->toBe('keyword')
+            ->and($result->body->mappings->properties->server_id->ignore_above)->toBe(256)
+            ->and($result->body->mappings->properties->type->type)->toBe('byte');
     }
+);
 
-    public function test_JsonDataのtoArrayメソッドを呼ぶことで、隅々の要素までarrayにキャストされた内容が返ってくること()
-    {
+test('JsonDataのtoArrayメソッドを呼ぶことで、隅々の要素までarrayにキャストされた内容が返ってくること',
+    function () {
         $dataTransferObject = new JsonData(
             index: 'chat_histories',
             body: [
-                "mappings" => [
-                    "properties" => [
-                        "pk" => [
-                            "type" => "long",
+                'mappings' => [
+                    'properties' => [
+                        'pk' => [
+                            'type' => 'long',
                         ],
 
-                        "id" => [
-                            "type" => "long",
+                        'id' => [
+                            'type' => 'long',
                         ],
 
-                        "server_id" => [
-                            "type"         => "keyword",
-                            "ignore_above" => 256,
+                        'server_id' => [
+                            'type'         => 'keyword',
+                            'ignore_above' => 256,
                         ],
 
-                        "type" => [
-                            "type" => "byte",
+                        'type' => [
+                            'type' => 'byte',
                         ],
                     ],
                 ],
             ],
         );
 
-        $this->assertSame(
-            expected: [
-                'body'  => [
+        expect($dataTransferObject->toArray())->toBe(
+            [
+                'body' => [
                     'mappings' => [
                         'properties' => [
                             'pk'        => ['type' => 'long'],
@@ -158,7 +85,26 @@ class JsonDataTest extends TestCase
                                 'type'         => 'keyword',
                                 'ignore_above' => 256,
                             ],
-                            'type'      => ['type' => 'byte'],
+                            'type' => ['type' => 'byte'],
+                        ],
+                    ],
+                ],
+                'index' => 'chat_histories',
+            ],
+        );
+
+        $this->assertSame(
+            expected: [
+                'body' => [
+                    'mappings' => [
+                        'properties' => [
+                            'pk'        => ['type' => 'long'],
+                            'id'        => ['type' => 'long'],
+                            'server_id' => [
+                                'type'         => 'keyword',
+                                'ignore_above' => 256,
+                            ],
+                            'type' => ['type' => 'byte'],
                         ],
                     ],
                 ],
@@ -168,4 +114,4 @@ class JsonDataTest extends TestCase
             actual: $dataTransferObject->toArray(),
         );
     }
-}
+);

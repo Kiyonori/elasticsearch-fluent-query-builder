@@ -1,32 +1,30 @@
 <?php
 
-namespace Tests;
-
 use Kiyonori\ElasticsearchFluentQueryBuilder\ApplyMapping;
 use Kiyonori\ElasticsearchFluentQueryBuilder\CheckIndexExists;
 use Kiyonori\ElasticsearchFluentQueryBuilder\DeleteIndex;
-use PHPUnit\Framework\TestCase;
 
-class ApplyMappingTest extends TestCase
-{
-    protected function setUp(): void
-    {
+beforeEach(
+    function () {
         app(DeleteIndex::class)->execute(
             indexName: 'chat_histories',
             suppressNotFoundException: true,
         );
     }
+);
 
-    protected function tearDown(): void
-    {
+afterEach(
+    function () {
         app(DeleteIndex::class)->execute(
             indexName: 'chat_histories',
             suppressNotFoundException: true,
         );
     }
+);
 
-    public function test_JSON_ファイルからElasticsearchに事前にマッピングできること()
-    {
+test(
+    'JSON ファイルからElasticsearchに事前にマッピングできること',
+    function () {
         $this->assertFalse(
             app(CheckIndexExists::class)->execute(
                 indexName: 'chat_histories'
@@ -42,10 +40,10 @@ class ApplyMappingTest extends TestCase
             string: $newIndexName,
         );
 
-        $this->assertTrue(
+        expect(
             app(CheckIndexExists::class)->execute(
                 indexName: 'chat_histories'
             )
-        );
+        )->toBeTrue();
     }
-}
+);

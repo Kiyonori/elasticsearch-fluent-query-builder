@@ -3,12 +3,10 @@
 use Elastic\Elasticsearch\Response\Elasticsearch;
 use Kiyonori\ElasticsearchFluentQueryBuilder\ApplyMapping;
 use Kiyonori\ElasticsearchFluentQueryBuilder\BulkStoreDocuments;
-use PHPUnit\Framework\TestCase;
 
-class BulkStoreDocumentsTest extends TestCase
-{
-    public function test_Elasticsearch_に一括でドキュメントを登録できること()
-    {
+test(
+    'Elasticsearch に一括でドキュメントを登録できること',
+    function () {
         $rowItem = [
             'chat_id' => 'u968ed404bc4626333e69ef21ad455a5d',
             'content' => 'おはようございます☀️今日もよろしくおねがいします🚲️',
@@ -35,9 +33,7 @@ class BulkStoreDocumentsTest extends TestCase
                 idColumnName: 'id',
             );
 
-        $this->assertSame(
-            expected: 200,
-            actual: $response->getStatusCode()
-        );
+        expect($response->getStatusCode())
+            ->toBe(200);
     }
-}
+);

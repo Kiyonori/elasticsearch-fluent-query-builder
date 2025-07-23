@@ -1,12 +1,10 @@
 <?php
 
 use Kiyonori\ElasticsearchFluentQueryBuilder\CompareArray;
-use PHPUnit\Framework\TestCase;
 
-class CompareArrayTest extends TestCase
-{
-    function test_2つの配列を比較し、全く同じであることを意味する「空っぽの配列」が返ってくること()
-    {
+test(
+    '2つの配列を比較し、全く同じであることを意味する「空っぽの配列」が返ってくること',
+    function () {
         $result = app(CompareArray::class)->execute(
             current: [
                 'a' => 111,
@@ -18,14 +16,13 @@ class CompareArrayTest extends TestCase
             ],
         );
 
-        $this->assertSame(
-            expected: [],
-            actual: $result,
-        );
+        expect($result)->toBe([]);
     }
+);
 
-    function test_2つの配列を比較し、差異のある部分が配列として返ってくること()
-    {
+test(
+    '2つの配列を比較し、差異のある部分が配列として返ってくること',
+    function () {
         $result = app(CompareArray::class)->execute(
             current: [
                 'a' => 111,
@@ -37,17 +34,17 @@ class CompareArrayTest extends TestCase
             ],
         );
 
-        $this->assertSame(
-            expected: [
+        expect($result)->toBe(
+            [
                 'b' => 223,
-            ],
-            actual: $result,
+            ]
         );
     }
+);
 
-    public function test_2つの配列を比較し、＄new_側の1階層目に欠けているキーがあっても無視され、差分として検知されないこと(
-    )
-    {
+test(
+    '2つの配列を比較し、＄new_側の1階層目に欠けているキーがあっても無視され、差分として検知されないこと',
+    function () {
         $result = app(CompareArray::class)->execute(
             current: [
                 'a' => 111,
@@ -59,14 +56,13 @@ class CompareArrayTest extends TestCase
             ],
         );
 
-        $this->assertSame(
-            expected: [],
-            actual: $result,
-        );
+        expect($result)->toBe([]);
     }
+);
 
-    public function test_2つの配列を比較し、＄new_側の1階層目に新しいキーがあっても無視され、差分として検知されないこと()
-    {
+test(
+    '2つの配列を比較し、＄new_側の1階層目に新しいキーがあっても無視され、差分として検知されないこと',
+    function () {
         $result = app(CompareArray::class)->execute(
             current: [
                 'a' => 111,
@@ -79,14 +75,13 @@ class CompareArrayTest extends TestCase
             ],
         );
 
-        $this->assertSame(
-            expected: [],
-            actual: $result,
-        );
+        expect($result)->toBe([]);
     }
+);
 
-    public function test_ネストされた配列同士の比較_＄current_と_＄new_の内容がまったく同じである場合、全く同じであることを意味する「空っぽの配列」が返ってくること()
-    {
+test('
+    ネストされた配列同士の比較_＄current_と_＄new_の内容がまったく同じである場合、全く同じであることを意味する「空っぽの配列」が返ってくること',
+    function () {
         $result = app(CompareArray::class)->execute(
             current: [
                 'a' => 111,
@@ -106,14 +101,13 @@ class CompareArrayTest extends TestCase
             ],
         );
 
-        $this->assertSame(
-            expected: [],
-            actual: $result,
-        );
+        expect($result)->toBe([]);
     }
+);
 
-    public function test_ネストされた配列同士の比較_＄current_と_＄new_のうち細部の_key_の並び順が_＄current_側と異なる場合、差分として1階層目の親のキーを含む配列が返ってくること()
-    {
+test(
+    'ネストされた配列同士の比較_＄current_と_＄new_のうち細部の_key_の並び順が_＄current_側と異なる場合、差分として1階層目の親のキーを含む配列が返ってくること',
+    function () {
         $result = app(CompareArray::class)->execute(
             current: [
                 'a' => 111,
@@ -133,19 +127,20 @@ class CompareArrayTest extends TestCase
             ],
         );
 
-        $this->assertSame(
-            expected: [
+        expect($result)->toBe(
+            [
                 'b' => [
                     'bb2' => 'か',
                     'bb1' => 'あ',
                 ],
-            ],
-            actual: $result,
+            ]
         );
     }
+);
 
-    public function test_ネストされた配列同士の比較_＄new_側のネストされた_key_項目が_＄current_側と比べて多い場合、差分として1階層目の親のキーを含む配列が返ってくること()
-    {
+test(
+    'ネストされた配列同士の比較_＄new_側のネストされた_key_項目が_＄current_側と比べて多い場合、差分として1階層目の親のキーを含む配列が返ってくること',
+    function () {
         $result = app(CompareArray::class)->execute(
             current: [
                 'a' => 111,
@@ -166,20 +161,21 @@ class CompareArrayTest extends TestCase
             ],
         );
 
-        $this->assertSame(
-            expected: [
+        expect($result)->toBe(
+            [
                 'b' => [
                     'bb1' => 'あ',
                     'bb2' => 'か',
                     'bb3' => 'さ',
                 ],
-            ],
-            actual: $result,
+            ]
         );
     }
+);
 
-    public function test_ネストされた配列同士の比較_＄new_側のネストされた_key_項目が_＄current_側と比べて少ない場合、差分として1階層目の親のキーを含む配列が返ってくること()
-    {
+test(
+    'ネストされた配列同士の比較_＄new_側のネストされた_key_項目が_＄current_側と比べて少ない場合、差分として1階層目の親のキーを含む配列が返ってくること',
+    function () {
         $result = app(CompareArray::class)->execute(
             current: [
                 'a' => 111,
@@ -201,19 +197,20 @@ class CompareArrayTest extends TestCase
             ],
         );
 
-        $this->assertSame(
-            expected: [
+        expect($result)->toBe(
+            [
                 'b' => [
                     'bb1' => 'あ',
                     'bb3' => 'さ',
                 ],
-            ],
-            actual: $result,
+            ]
         );
     }
+);
 
-    public function test_ネストされた配列同士の比較［］形式の場合にて_＄new_側のネストされた項目が_＄current_側と比べて多い場合、差分として1階層目の親のキーを含む配列が返ってくること()
-    {
+test(
+    'ネストされた配列同士の比較［］形式の場合にて_＄new_側のネストされた項目が_＄current_側と比べて多い場合、差分として1階層目の親のキーを含む配列が返ってくること',
+    function () {
         $result = app(CompareArray::class)->execute(
             current: [
                 'a' => 111,
@@ -234,20 +231,21 @@ class CompareArrayTest extends TestCase
             ],
         );
 
-        $this->assertSame(
-            expected: [
+        expect($result)->toBe(
+            [
                 'b' => [
                     'あいうえお',
                     'アイウエオ',
                     'かきくけこ',
                 ],
-            ],
-            actual: $result,
+            ]
         );
     }
+);
 
-    public function test_ネストされた配列同士の比較_［］形式の場合にて_＄new_側のネストされた項目が_＄current_側と比べて少ない場合、差分として1階層目の親のキーを含む配列が返ってくること()
-    {
+test(
+    'ネストされた配列同士の比較_［］形式の場合にて_＄new_側のネストされた項目が_＄current_側と比べて少ない場合、差分として1階層目の親のキーを含む配列が返ってくること',
+    function () {
         $result = app(CompareArray::class)->execute(
             current: [
                 'a' => 111,
@@ -267,13 +265,12 @@ class CompareArrayTest extends TestCase
             ],
         );
 
-        $this->assertSame(
-            expected: [
+        expect($result)->toBe(
+            [
                 'b' => [
                     'アイウエオ',
                 ],
-            ],
-            actual: $result,
+            ]
         );
     }
-}
+);

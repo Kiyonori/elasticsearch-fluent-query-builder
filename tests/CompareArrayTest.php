@@ -43,7 +43,7 @@ test(
 );
 
 test(
-    '2つの配列を比較し、＄new_側の1階層目に欠けているキーがあっても無視され、差分として検知されないこと',
+    '2つの配列を比較し、＄new 側の1階層目に欠けているキーがあっても無視され、差分として検知されないこと',
     function () {
         $result = app(CompareArray::class)->execute(
             current: [
@@ -61,7 +61,7 @@ test(
 );
 
 test(
-    '2つの配列を比較し、＄new_側の1階層目に新しいキーがあっても無視され、差分として検知されないこと',
+    '2つの配列を比較し、＄new 側の1階層目に新しいキーがあっても無視され、差分として検知されないこと',
     function () {
         $result = app(CompareArray::class)->execute(
             current: [
@@ -79,8 +79,8 @@ test(
     }
 );
 
-test('
-    ネストされた配列同士の比較_＄current_と_＄new_の内容がまったく同じである場合、全く同じであることを意味する「空っぽの配列」が返ってくること',
+test(
+    'ネストされた配列同士の比較 ＄current と ＄new の内容がまったく同じである場合、全く同じであることを意味する「空っぽの配列」が返ってくること',
     function () {
         $result = app(CompareArray::class)->execute(
             current: [
@@ -106,7 +106,7 @@ test('
 );
 
 test(
-    'ネストされた配列同士の比較_＄current_と_＄new_のうち細部の_key_の並び順が_＄current_側と異なる場合、差分として1階層目の親のキーを含む配列が返ってくること',
+    'ネストされた配列同士の比較 ＄current と ＄new のうち細部の key の並び順が ＄current 側と異なる場合、差分として1階層目の親のキーを含む配列が返ってくること',
     function () {
         $result = app(CompareArray::class)->execute(
             current: [
@@ -139,7 +139,7 @@ test(
 );
 
 test(
-    'ネストされた配列同士の比較_＄new_側のネストされた_key_項目が_＄current_側と比べて多い場合、差分として1階層目の親のキーを含む配列が返ってくること',
+    'ネストされた配列同士の比較 ＄new 側のネストされた key 項目が ＄current 側と比べて多い場合、差分として1階層目の親のキーを含む配列が返ってくること',
     function () {
         $result = app(CompareArray::class)->execute(
             current: [
@@ -174,7 +174,7 @@ test(
 );
 
 test(
-    'ネストされた配列同士の比較_＄new_側のネストされた_key_項目が_＄current_側と比べて少ない場合、差分として1階層目の親のキーを含む配列が返ってくること',
+    'ネストされた配列同士の比較 ＄new 側のネストされた key 項目が ＄current 側と比べて少ない場合、差分として1階層目の親のキーを含む配列が返ってくること',
     function () {
         $result = app(CompareArray::class)->execute(
             current: [
@@ -209,7 +209,7 @@ test(
 );
 
 test(
-    'ネストされた配列同士の比較［］形式の場合にて_＄new_側のネストされた項目が_＄current_側と比べて多い場合、差分として1階層目の親のキーを含む配列が返ってくること',
+    'ネストされた配列同士の比較［］形式の場合にて ＄new 側のネストされた項目が ＄current 側と比べて多い場合、差分として1階層目の親のキーを含む配列が返ってくること',
     function () {
         $result = app(CompareArray::class)->execute(
             current: [
@@ -244,7 +244,7 @@ test(
 );
 
 test(
-    'ネストされた配列同士の比較_［］形式の場合にて_＄new_側のネストされた項目が_＄current_側と比べて少ない場合、差分として1階層目の親のキーを含む配列が返ってくること',
+    'ネストされた配列同士の比較 ［］形式の場合にて ＄new 側のネストされた項目が ＄current 側と比べて少ない場合、差分として1階層目の親のキーを含む配列が返ってくること',
     function () {
         $result = app(CompareArray::class)->execute(
             current: [

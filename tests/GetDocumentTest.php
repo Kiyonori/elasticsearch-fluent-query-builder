@@ -5,12 +5,9 @@ use Kiyonori\ElasticsearchFluentQueryBuilder\ApplyMapping;
 use Kiyonori\ElasticsearchFluentQueryBuilder\DeleteIndex;
 use Kiyonori\ElasticsearchFluentQueryBuilder\GetDocument;
 use Kiyonori\ElasticsearchFluentQueryBuilder\StoreDocument;
-use PHPUnit\Framework\TestCase;
 
-class GetDocumentTest extends TestCase
-{
-    protected function setUp(): void
-    {
+beforeEach(
+    function () {
         // テスト開始前にインデックスを削除する
         app(DeleteIndex::class)
             ->execute(
@@ -23,9 +20,11 @@ class GetDocumentTest extends TestCase
             jsonFilePath: realpath(__DIR__ . '/storages/explicit_mapping/chat_histories.json')
         );
     }
+);
 
-    public function test_Elasticsearch_から_id_を指定してドキュメントが取得できること()
-    {
+test(
+    'Elasticsearch から id を指定してドキュメントが取得できること',
+    function () {
         app(StoreDocument::class)->execute(
             indexName: 'chat_histories',
             documentId: '123123',
@@ -70,9 +69,11 @@ class GetDocumentTest extends TestCase
             actual: $result['_id']
         );
     }
+);
 
-    public function test_Elasticsearch_から_id_を指定してドキュメントを取得する歳、指定した_ID_のドキュメントが見つからない場合、404が返ってくること()
-    {
+test(
+    'Elasticsearch から id を指定してドキュメントを取得する歳、指定した_ID_のドキュメントが見つからない場合、404が返ってくること',
+    function () {
         app(StoreDocument::class)->execute(
             indexName: 'chat_histories',
             documentId: '123123',
@@ -115,4 +116,4 @@ class GetDocumentTest extends TestCase
             documentId: '99999',
         );
     }
-}
+);

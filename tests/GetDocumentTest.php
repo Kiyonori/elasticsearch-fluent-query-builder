@@ -64,10 +64,8 @@ test(
             documentId: '123123',
         );
 
-        $this->assertSame(
-            expected: '123123',
-            actual: $result['_id']
-        );
+        expect($result['_id'])
+            ->toBe('123123');
     }
 );
 

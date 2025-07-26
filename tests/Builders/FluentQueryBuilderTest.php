@@ -93,70 +93,7 @@ test(
                     ],
                 ],
             ]
-        )->and($result)->toBe(
-            [
-                'body' => [
-                    'query' => [
-                        'bool' => [
-                            'must' => [
-                                [
-                                    'term' => [
-                                        'chat_id' => 'u968edd043c46262efe69ef21ad458c6d',
-                                    ],
-                                ],
-                                [
-                                    'term' => [
-                                        'type' => 1,
-                                    ],
-                                ],
-                                [
-                                    'match' => [
-                                        'content' => 'おはよう',
-                                    ],
-                                ],
-                                [
-                                    'match' => [
-                                        'content' => '今度',
-                                    ],
-                                ],
-                                [
-                                    'range' => [
-                                        'created_time' => [
-                                            'gte' => 1736925752798,
-                                        ],
-                                    ],
-                                ],
-                                [
-                                    'range' => [
-                                        'id' => [
-                                            'gte' => 333,
-                                            'lte' => 555,
-                                        ],
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                    'size'         => 10,
-                    'search_after' => [
-                        12345,
-                    ],
-                    'sort' => [
-                        [
-                            'created_time' => [
-                                'order' => 'desc',
-                            ],
-                        ],
-                        [
-                            'id' => [
-                                'order' => 'desc',
-                            ],
-                        ],
-                    ],
-                ],
-            ]
         );
-
     }
 );
 

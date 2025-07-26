@@ -25,25 +25,22 @@ afterEach(
 test(
     'JSON ファイルからElasticsearchに事前にマッピングできること',
     function () {
-        $this->assertFalse(
+        expect(
             app(CheckIndexExists::class)->execute(
                 indexName: 'chat_histories'
             )
-        );
+        )->toBeFalse();
 
         $newIndexName = app(ApplyMapping::class)->execute(
             jsonFilePath: realpath(__DIR__ . '/storages/explicit_mapping/chat_histories.json'),
         );
 
-        $this->assertStringStartsWith(
-            prefix: 'chat_histories_',
-            string: $newIndexName,
-        );
-
-        expect(
-            app(CheckIndexExists::class)->execute(
-                indexName: 'chat_histories'
-            )
-        )->toBeTrue();
+        expect($newIndexName)
+            ->toStartWith('chat_histories_')
+            ->and(
+                app(CheckIndexExists::class)->execute(
+                    indexName: 'chat_histories'
+                )
+            )->toBeTrue();
     }
 );

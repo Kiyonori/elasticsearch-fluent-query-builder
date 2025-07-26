@@ -159,6 +159,68 @@ test(
 );
 
 test(
+    'should 検索条件を含めて toArray メソッドを呼んだ場合、意図したクエリの形が組み立てられること',
+    function () {
+        $searchQuery = app(FluentQueryBuilder::class);
+
+        $result = $searchQuery
+            ->should(function (Builder $filter) {
+                $filter
+                    ->term('chat_id', 'u968edd043c46262efe69ef21ad458c6d')
+                    ->term('type', 1)
+                    ->match('content', 'おはよう')
+                    ->match('content', '今度は')
+                    ->range(
+                        'created_time',
+                        1777777777777,
+                        1888888888888,
+                    );
+            })
+            ->minimumShouldMatch(2)
+            ->toArray();
+
+        expect($result)->toBe([
+            'body' => [
+                'query' => [
+                    'bool' => [
+                        'should' => [
+                            [
+                                'term' => [
+                                    'chat_id' => 'u968edd043c46262efe69ef21ad458c6d',
+                                ],
+                            ],
+                            [
+                                'term' => [
+                                    'type' => 1,
+                                ],
+                            ],
+                            [
+                                'match' => [
+                                    'content' => 'おはよう',
+                                ],
+                            ],
+                            [
+                                'match' => [
+                                    'content' => '今度は',
+                                ],
+                            ],
+                            [
+                                'range' => [
+                                    'created_time' => [
+                                        'gte' => 1777777777777,
+                                        'lte' => 1888888888888,
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'minimum_should_match' => 2,
+                    ],
+                ],
+            ],
+        ]);
+    });
+
+test(
     'must not 検索条件を含めて toArray メソッドを呼んだ場合、意図したクエリの形が組み立てられること',
     function () {
         $searchQuery = new FluentQueryBuilder;

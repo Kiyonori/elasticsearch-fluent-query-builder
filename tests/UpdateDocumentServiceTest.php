@@ -5,12 +5,10 @@ use Kiyonori\ElasticsearchFluentQueryBuilder\DeleteIndex;
 use Kiyonori\ElasticsearchFluentQueryBuilder\GetDocument;
 use Kiyonori\ElasticsearchFluentQueryBuilder\StoreDocument;
 use Kiyonori\ElasticsearchFluentQueryBuilder\UpdateDocument;
-use PHPUnit\Framework\TestCase;
 
-class UpdateDocumentServiceTest extends TestCase
-{
-    public function test_Elasticsearch_のドキュメントの一部分の値の変更ができること()
-    {
+test(
+    'Elasticsearch のドキュメントの一部分の値の変更ができること',
+    function () {
         // テスト開始前にインデックスを削除する
         app(DeleteIndex::class)
             ->execute(
@@ -63,10 +61,8 @@ class UpdateDocumentServiceTest extends TestCase
             documentId: '123123',
         );
 
-        $this->assertSame(
-            expected: 'おはようございます☀️今日もよろしくおねがいします🚲️',
-            actual: $currentDocument['_source']['content']
-        );
+        expect($currentDocument['_source']['content'])
+            ->toBe('おはようございます☀️今日もよろしくおねがいします🚲️');
 
         // 2. id:123123 の content を 'こんにちは' に変更する
         app(UpdateDocument::class)->execute(
@@ -85,9 +81,7 @@ class UpdateDocumentServiceTest extends TestCase
             );
 
         // 4. content が 'こんにちは' に書き換わっていること
-        $this->assertSame(
-            expected: 'こんにちは',
-            actual: $newDocument['_source']['content']
-        );
+        expect($newDocument['_source']['content'])
+            ->toBe('こんにちは');
     }
-}
+);

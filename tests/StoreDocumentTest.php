@@ -3,12 +3,10 @@
 use Kiyonori\ElasticsearchFluentQueryBuilder\ApplyMapping;
 use Kiyonori\ElasticsearchFluentQueryBuilder\DeleteIndex;
 use Kiyonori\ElasticsearchFluentQueryBuilder\StoreDocument;
-use PHPUnit\Framework\TestCase;
 
-class StoreDocumentTest extends TestCase
-{
-    public function test_Elasticsearch_にドキュメントを1件、正しく登録できること()
-    {
+test(
+    'Elasticsearch にドキュメントを1件、正しく登録できること',
+    function () {
         // テストには直接影響しないが、フィールドのマッピング定義を削除・登録しておく
         app(DeleteIndex::class)->execute(
             indexName: 'chat_histories',
@@ -55,9 +53,7 @@ class StoreDocumentTest extends TestCase
                 ],
             );
 
-        $this->assertSame(
-            expected: 201,
-            actual: $response->getStatusCode(),
-        );
+        expect($response->getStatusCode())
+            ->toBe(201);
     }
-}
+);

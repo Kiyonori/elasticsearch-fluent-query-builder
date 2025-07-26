@@ -93,10 +93,8 @@ test(
                     ],
                 ],
             ]
-        );
-
-        $this->assertSame(
-            expected: [
+        )->and($result)->toBe(
+            [
                 'body' => [
                     'query' => [
                         'bool' => [
@@ -156,9 +154,9 @@ test(
                         ],
                     ],
                 ],
-            ],
-            actual: $result,
+            ]
         );
+
     }
 );
 
@@ -182,38 +180,36 @@ test(
             })
             ->toArray();
 
-        $this->assertSame(
-            expected: [
-                'body' => [
-                    'query' => [
-                        'bool' => [
-                            'filter' => [
-                                [
-                                    'term' => [
-                                        'chat_id' => 'u968edd043c46262efe69ef21ad458c6d',
-                                    ],
+        expect($result)->toBe([
+            'body' => [
+                'query' => [
+                    'bool' => [
+                        'filter' => [
+                            [
+                                'term' => [
+                                    'chat_id' => 'u968edd043c46262efe69ef21ad458c6d',
                                 ],
-                                [
-                                    'term' => [
-                                        'type' => 1,
-                                    ],
+                            ],
+                            [
+                                'term' => [
+                                    'type' => 1,
                                 ],
-                                [
-                                    'match' => [
-                                        'content' => 'おはよう',
-                                    ],
+                            ],
+                            [
+                                'match' => [
+                                    'content' => 'おはよう',
                                 ],
-                                [
-                                    'match' => [
-                                        'content' => '今度は',
-                                    ],
+                            ],
+                            [
+                                'match' => [
+                                    'content' => '今度は',
                                 ],
-                                [
-                                    'range' => [
-                                        'created_time' => [
-                                            'gte' => 1777777777777,
-                                            'lte' => 1888888888888,
-                                        ],
+                            ],
+                            [
+                                'range' => [
+                                    'created_time' => [
+                                        'gte' => 1777777777777,
+                                        'lte' => 1888888888888,
                                     ],
                                 ],
                             ],
@@ -221,8 +217,7 @@ test(
                     ],
                 ],
             ],
-            actual: $result,
-        );
+        ]);
     }
 );
 
@@ -246,8 +241,8 @@ test(
             })
             ->toArray();
 
-        $this->assertSame(
-            expected: [
+        expect($result)->toBe(
+            [
                 'body' => [
                     'query' => [
                         'bool' => [
@@ -284,8 +279,7 @@ test(
                         ],
                     ],
                 ],
-            ],
-            actual: $result,
+            ]
         );
     }
 );
@@ -301,8 +295,8 @@ test(
             })
             ->toArray();
 
-        $this->assertSame(
-            expected: [
+        expect($result)->toBe(
+            [
                 'body' => [
                     'highlight' => [
                         'fields' => [
@@ -310,8 +304,7 @@ test(
                         ],
                     ],
                 ],
-            ],
-            actual: $result,
+            ]
         );
 
         $result = $searchQuery
@@ -325,8 +318,8 @@ test(
             )
             ->toArray();
 
-        $this->assertSame(
-            expected: [
+        expect($result)->toBe(
+            [
                 'body' => [
                     'highlight' => [
                         'fields' => [
@@ -337,8 +330,7 @@ test(
                         ],
                     ],
                 ],
-            ],
-            actual: $result,
+            ]
         );
 
         $result = $searchQuery
@@ -354,8 +346,8 @@ test(
             )
             ->toArray();
 
-        $this->assertSame(
-            expected: [
+        expect($result)->toBe(
+            [
                 'body' => [
                     'highlight' => [
                         'pre_tags'  => ['<em>'],
@@ -368,8 +360,7 @@ test(
                         ],
                     ],
                 ],
-            ],
-            actual: $result,
+            ]
         );
 
         $result = $searchQuery
@@ -398,8 +389,8 @@ test(
             )
             ->toArray();
 
-        $this->assertSame(
-            expected: [
+        expect($result)->toBe(
+            [
                 'body' => [
                     'query' => [
                         'bool' => [
@@ -445,8 +436,7 @@ test(
                         ],
                     ],
                 ],
-            ],
-            actual: $result,
+            ]
         );
     }
 );
@@ -466,8 +456,8 @@ test(
             ->size(10)
             ->toArray();
 
-        $this->assertSame(
-            expected: [
+        expect($result)->toBe(
+            [
                 'body' => [
                     'query' => [
                         'bool' => [
@@ -488,8 +478,7 @@ test(
                     'from' => 3,
                     'size' => 10,
                 ],
-            ],
-            actual: $result,
+            ]
         );
     }
 );
@@ -502,9 +491,6 @@ test(
         $result = $searchQuery
             ->toArray();
 
-        $this->assertSame(
-            expected: [],
-            actual: $result,
-        );
+        expect($result)->toBe([]);
     }
 );

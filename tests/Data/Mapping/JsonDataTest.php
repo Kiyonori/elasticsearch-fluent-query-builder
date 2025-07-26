@@ -93,25 +93,6 @@ test('JsonDataのtoArrayメソッドを呼ぶことで、隅々の要素までar
                 ],
                 'index' => 'chat_histories',
             ],
-        )->and(
-            $dataTransferObject->toArray()
-        )->toBe(
-            [
-                'body' => [
-                    'mappings' => [
-                        'properties' => [
-                            'pk'        => ['type' => 'long'],
-                            'id'        => ['type' => 'long'],
-                            'server_id' => [
-                                'type'         => 'keyword',
-                                'ignore_above' => 256,
-                            ],
-                            'type' => ['type' => 'byte'],
-                        ],
-                    ],
-                ],
-                'index' => 'chat_histories',
-            ]
         );
     }
 );

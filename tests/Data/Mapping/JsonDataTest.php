@@ -74,7 +74,9 @@ test('JsonDataのtoArrayメソッドを呼ぶことで、隅々の要素までar
             ],
         );
 
-        expect($dataTransferObject->toArray())->toBe(
+        expect(
+            $dataTransferObject->toArray()
+        )->toBe(
             [
                 'body' => [
                     'mappings' => [
@@ -91,10 +93,10 @@ test('JsonDataのtoArrayメソッドを呼ぶことで、隅々の要素までar
                 ],
                 'index' => 'chat_histories',
             ],
-        );
-
-        $this->assertSame(
-            expected: [
+        )->and(
+            $dataTransferObject->toArray()
+        )->toBe(
+            [
                 'body' => [
                     'mappings' => [
                         'properties' => [
@@ -109,9 +111,7 @@ test('JsonDataのtoArrayメソッドを呼ぶことで、隅々の要素までar
                     ],
                 ],
                 'index' => 'chat_histories',
-            ],
-
-            actual: $dataTransferObject->toArray(),
+            ]
         );
     }
 );

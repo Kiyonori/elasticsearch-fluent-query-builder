@@ -1,19 +1,14 @@
 <?php
 
-
-namespace Tests\Builders;
-
+use Kiyonori\ElasticsearchFluentQueryBuilder\Builders\Builder;
 use Kiyonori\ElasticsearchFluentQueryBuilder\Builders\FluentQueryBuilder;
 use Kiyonori\ElasticsearchFluentQueryBuilder\Builders\Highlight;
 use Kiyonori\ElasticsearchFluentQueryBuilder\Values\Nothing;
 use Kiyonori\ElasticsearchFluentQueryBuilder\Values\StaticStd;
-use PHPUnit\Framework\TestCase;
-use Kiyonori\ElasticsearchFluentQueryBuilder\Builders\Builder;
 
-class FluentQueryBuilderTest extends TestCase
-{
-    public function test_must_検索条件を含めて_toArray_メソッドを呼んだ場合、意図したクエリの形が組み立てられること()
-    {
+test(
+    'must 検索条件を含めて toArray メソッドを呼んだ場合、意図したクエリの形が組み立てられること',
+    function () {
         $searchQuery = new FluentQueryBuilder;
 
         $result = $searchQuery
@@ -36,10 +31,10 @@ class FluentQueryBuilderTest extends TestCase
             ->sort('id', 'desc')
             ->toArray();
 
-        $this->assertSame(
-            expected: [
+        expect($result)->toBe(
+            [
                 'body' => [
-                    'query'        => [
+                    'query' => [
                         'bool' => [
                             'must' => [
                                 [
@@ -84,7 +79,7 @@ class FluentQueryBuilderTest extends TestCase
                     'search_after' => [
                         12345,
                     ],
-                    'sort'         => [
+                    'sort' => [
                         [
                             'created_time' => [
                                 'order' => 'desc',
@@ -97,13 +92,14 @@ class FluentQueryBuilderTest extends TestCase
                         ],
                     ],
                 ],
-            ],
-            actual: $result,
+            ]
         );
     }
+);
 
-    public function test_filter_検索条件を含めて_toArray_メソッドを呼んだ場合、意図したクエリの形が組み立てられること()
-    {
+test(
+    'filter 検索条件を含めて toArray メソッドを呼んだ場合、意図したクエリの形が組み立てられること',
+    function () {
         $searchQuery = new FluentQueryBuilder;
 
         $result = $searchQuery
@@ -121,38 +117,36 @@ class FluentQueryBuilderTest extends TestCase
             })
             ->toArray();
 
-        $this->assertSame(
-            expected: [
-                'body' => [
-                    'query' => [
-                        'bool' => [
-                            'filter' => [
-                                [
-                                    'term' => [
-                                        'chat_id' => 'u968edd043c46262efe69ef21ad458c6d',
-                                    ],
+        expect($result)->toBe([
+            'body' => [
+                'query' => [
+                    'bool' => [
+                        'filter' => [
+                            [
+                                'term' => [
+                                    'chat_id' => 'u968edd043c46262efe69ef21ad458c6d',
                                 ],
-                                [
-                                    'term' => [
-                                        'type' => 1,
-                                    ],
+                            ],
+                            [
+                                'term' => [
+                                    'type' => 1,
                                 ],
-                                [
-                                    'match' => [
-                                        'content' => 'おはよう',
-                                    ],
+                            ],
+                            [
+                                'match' => [
+                                    'content' => 'おはよう',
                                 ],
-                                [
-                                    'match' => [
-                                        'content' => '今度は',
-                                    ],
+                            ],
+                            [
+                                'match' => [
+                                    'content' => '今度は',
                                 ],
-                                [
-                                    'range' => [
-                                        'created_time' => [
-                                            'gte' => 1777777777777,
-                                            'lte' => 1888888888888,
-                                        ],
+                            ],
+                            [
+                                'range' => [
+                                    'created_time' => [
+                                        'gte' => 1777777777777,
+                                        'lte' => 1888888888888,
                                     ],
                                 ],
                             ],
@@ -160,12 +154,75 @@ class FluentQueryBuilderTest extends TestCase
                     ],
                 ],
             ],
-            actual: $result,
-        );
+        ]);
     }
+);
 
-    public function test_must_not_検索条件を含めて_toArray_メソッドを呼んだ場合、意図したクエリの形が組み立てられること()
-    {
+test(
+    'should 検索条件を含めて toArray メソッドを呼んだ場合、意図したクエリの形が組み立てられること',
+    function () {
+        $searchQuery = app(FluentQueryBuilder::class);
+
+        $result = $searchQuery
+            ->should(function (Builder $filter) {
+                $filter
+                    ->term('chat_id', 'u968edd043c46262efe69ef21ad458c6d')
+                    ->term('type', 1)
+                    ->match('content', 'おはよう')
+                    ->match('content', '今度は')
+                    ->range(
+                        'created_time',
+                        1777777777777,
+                        1888888888888,
+                    );
+            })
+            ->minimumShouldMatch(2)
+            ->toArray();
+
+        expect($result)->toBe([
+            'body' => [
+                'query' => [
+                    'bool' => [
+                        'should' => [
+                            [
+                                'term' => [
+                                    'chat_id' => 'u968edd043c46262efe69ef21ad458c6d',
+                                ],
+                            ],
+                            [
+                                'term' => [
+                                    'type' => 1,
+                                ],
+                            ],
+                            [
+                                'match' => [
+                                    'content' => 'おはよう',
+                                ],
+                            ],
+                            [
+                                'match' => [
+                                    'content' => '今度は',
+                                ],
+                            ],
+                            [
+                                'range' => [
+                                    'created_time' => [
+                                        'gte' => 1777777777777,
+                                        'lte' => 1888888888888,
+                                    ],
+                                ],
+                            ],
+                        ],
+                        'minimum_should_match' => 2,
+                    ],
+                ],
+            ],
+        ]);
+    });
+
+test(
+    'must not 検索条件を含めて toArray メソッドを呼んだ場合、意図したクエリの形が組み立てられること',
+    function () {
         $searchQuery = new FluentQueryBuilder;
 
         $result = $searchQuery
@@ -183,8 +240,8 @@ class FluentQueryBuilderTest extends TestCase
             })
             ->toArray();
 
-        $this->assertSame(
-            expected: [
+        expect($result)->toBe(
+            [
                 'body' => [
                     'query' => [
                         'bool' => [
@@ -221,13 +278,14 @@ class FluentQueryBuilderTest extends TestCase
                         ],
                     ],
                 ],
-            ],
-            actual: $result,
+            ]
         );
     }
+);
 
-    public function test_highlight_検索条件を含めて_toArray_メソッドを呼んだ場合、意図したクエリの形が組み立てられること()
-    {
+test(
+    'highlight 検索条件を含めて toArray メソッドを呼んだ場合、意図したクエリの形が組み立てられること',
+    function () {
         $searchQuery = new FluentQueryBuilder;
 
         $result = $searchQuery
@@ -236,8 +294,8 @@ class FluentQueryBuilderTest extends TestCase
             })
             ->toArray();
 
-        $this->assertSame(
-            expected: [
+        expect($result)->toBe(
+            [
                 'body' => [
                     'highlight' => [
                         'fields' => [
@@ -245,13 +303,12 @@ class FluentQueryBuilderTest extends TestCase
                         ],
                     ],
                 ],
-            ],
-            actual: $result,
+            ]
         );
 
         $result = $searchQuery
             ->highlight(
-                fn(Highlight $highlightField) => $highlightField
+                fn (Highlight $highlightField) => $highlightField
                     ->fields(
                         fieldName: 'content',
                         fragmentSize: 150,
@@ -260,8 +317,8 @@ class FluentQueryBuilderTest extends TestCase
             )
             ->toArray();
 
-        $this->assertSame(
-            expected: [
+        expect($result)->toBe(
+            [
                 'body' => [
                     'highlight' => [
                         'fields' => [
@@ -272,13 +329,12 @@ class FluentQueryBuilderTest extends TestCase
                         ],
                     ],
                 ],
-            ],
-            actual: $result,
+            ]
         );
 
         $result = $searchQuery
             ->highlight(
-                fn(Highlight $highlightField) => $highlightField
+                fn (Highlight $highlightField) => $highlightField
                     ->fields(
                         fieldName: 'content',
                         fragmentSize: 150,
@@ -289,8 +345,8 @@ class FluentQueryBuilderTest extends TestCase
             )
             ->toArray();
 
-        $this->assertSame(
-            expected: [
+        expect($result)->toBe(
+            [
                 'body' => [
                     'highlight' => [
                         'pre_tags'  => ['<em>'],
@@ -303,8 +359,7 @@ class FluentQueryBuilderTest extends TestCase
                         ],
                     ],
                 ],
-            ],
-            actual: $result,
+            ]
         );
 
         $result = $searchQuery
@@ -321,7 +376,7 @@ class FluentQueryBuilderTest extends TestCase
                     );
             })
             ->highlight(
-                fn(Highlight $highlightField) => $highlightField
+                fn (Highlight $highlightField) => $highlightField
                     ->fields(
                         fieldName: 'content',
                         fragmentSize: 150,
@@ -333,10 +388,10 @@ class FluentQueryBuilderTest extends TestCase
             )
             ->toArray();
 
-        $this->assertSame(
-            expected: [
+        expect($result)->toBe(
+            [
                 'body' => [
-                    'query'     => [
+                    'query' => [
                         'bool' => [
                             'filter' => [
                                 [
@@ -380,13 +435,14 @@ class FluentQueryBuilderTest extends TestCase
                         ],
                     ],
                 ],
-            ],
-            actual: $result,
+            ]
         );
     }
+);
 
-    public function test_from_検索条件を含めて_toArray_メソッドを呼んだ場合、意図したクエリの形が組み立てられること()
-    {
+test(
+    'from 検索条件を含めて toArray メソッドを呼んだ場合、意図したクエリの形が組み立てられること',
+    function () {
         $searchQuery = new FluentQueryBuilder;
 
         $result = $searchQuery
@@ -399,8 +455,8 @@ class FluentQueryBuilderTest extends TestCase
             ->size(10)
             ->toArray();
 
-        $this->assertSame(
-            expected: [
+        expect($result)->toBe(
+            [
                 'body' => [
                     'query' => [
                         'bool' => [
@@ -418,24 +474,22 @@ class FluentQueryBuilderTest extends TestCase
                             ],
                         ],
                     ],
-                    'from'  => 3,
-                    'size'  => 10,
+                    'from' => 3,
+                    'size' => 10,
                 ],
-            ],
-            actual: $result,
+            ]
         );
     }
+);
 
-    public function test_全パラメータ空っぽの場合にて_toArray_メソッドで意図したクエリの形が組み立てられること()
-    {
+test(
+    '全パラメータ空っぽの場合にて toArray メソッドで意図したクエリの形が組み立てられること',
+    function () {
         $searchQuery = new FluentQueryBuilder;
 
         $result = $searchQuery
             ->toArray();
 
-        $this->assertSame(
-            expected: [],
-            actual: $result,
-        );
+        expect($result)->toBe([]);
     }
-}
+);

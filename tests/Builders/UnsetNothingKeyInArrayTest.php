@@ -1,15 +1,11 @@
 <?php
 
-namespace Tests\Builders;
-
 use Kiyonori\ElasticsearchFluentQueryBuilder\Builders\UnsetNothingKeyInArray;
 use Kiyonori\ElasticsearchFluentQueryBuilder\Values\Nothing;
-use PHPUnit\Framework\TestCase;
 
-class UnsetNothingKeyInArrayTest extends TestCase
-{
-    public function test_value_部分が_Nothing：：class_の場合は_key_ごと取り除かれていること()
-    {
+test(
+    'value 部分が Nothing：：class の場合は key ごと取り除かれていること',
+    function () {
         $input = [
             'key1' => [
                 'sub_key' => [
@@ -52,8 +48,8 @@ class UnsetNothingKeyInArrayTest extends TestCase
             $input,
         );
 
-        $this->assertSame(
-            expected: [
+        expect($result)->toBe(
+            [
                 'key1' => [
                     'sub_key' => [
                         // 'sub_sub_key_1' => Nothing::make(),
@@ -90,7 +86,6 @@ class UnsetNothingKeyInArrayTest extends TestCase
                     ],
                 ],
             ],
-            actual: $result,
         );
     }
-}
+);

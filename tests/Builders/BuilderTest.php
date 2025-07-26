@@ -1,14 +1,10 @@
 <?php
 
-namespace Tests\Builders;
-
-use PHPUnit\Framework\TestCase;
 use Kiyonori\ElasticsearchFluentQueryBuilder\Builders\Builder;
 
-class BuilderTest extends TestCase
-{
-    public function test_toArray_メソッドで意図したクエリの「部分的な」形が組み立てられること()
-    {
+test(
+    'test toArray メソッドで意図したクエリの「部分的な」形が組み立てられること',
+    function () {
         $builder = new Builder;
 
         $result = $builder
@@ -24,8 +20,8 @@ class BuilderTest extends TestCase
             ->range('id', 333, 555)
             ->toArray();
 
-        $this->assertSame(
-            [
+        expect($result)
+            ->toBe([
                 [
                     'term' => [
                         'chat_id' => 'u668aaa043c05062efe612321ad458c0a',
@@ -62,8 +58,6 @@ class BuilderTest extends TestCase
                         ],
                     ],
                 ],
-            ],
-            $result,
-        );
+            ]);
     }
-}
+);

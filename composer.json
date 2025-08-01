@@ -30,11 +30,13 @@
     "config": {
         "allow-plugins": {
             "php-http/discovery": true,
-            "pestphp/pest-plugin": true
+            "pestphp/pest-plugin": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
         }
     },
     "require-dev": {
         "pestphp/pest": "^3.8",
-        "laravel/pint": "^1.24"
+        "laravel/pint": "^1.24",
+        "nunomaduro/phpinsights": "^2.13"
     }
 }

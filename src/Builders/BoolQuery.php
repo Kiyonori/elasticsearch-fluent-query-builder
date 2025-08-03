@@ -6,6 +6,8 @@ use Kiyonori\ElasticsearchFluentQueryBuilder\Values\Nothing;
 
 final class BoolQuery
 {
+    private array $terms = [];
+
     private array $matches = [];
 
     private ?int $minimumMatch = null;
@@ -13,6 +15,19 @@ final class BoolQuery
     public static function should(): self
     {
         return new self;
+    }
+
+    public function term(
+        string $fieldName,
+        mixed $value,
+    ): self {
+        $this->terms[] = [
+            'term' => [
+                $fieldName => $value,
+            ],
+        ];
+
+        return $this;
     }
 
     public function match(
@@ -40,7 +55,17 @@ final class BoolQuery
     {
         $result = [
             'bool' => [
-                'should'               => $this->matches,
+                'should' => (function () {
+                    if (count($this->terms) >= 1) {
+                        return $this->terms;
+                    }
+
+                    if (count($this->matches) >= 1) {
+                        return $this->matches;
+                    }
+
+                    return Nothing::make();
+                })(),
                 'minimum_should_match' => $this->minimumMatch ?? Nothing::make(),
             ],
         ];

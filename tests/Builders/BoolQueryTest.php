@@ -45,3 +45,23 @@ test(
         ]);
     }
 );
+
+test(
+    'BoolQuery：：should（）−＞term 検索条件を組み立てられること',
+    function () {
+        $result = BoolQuery::should()
+            ->term('field_1', 'value 1')
+            ->term('field_2', 222.2)
+            ->toArray();
+
+        expect($result)->toBe([
+            'bool' => [
+                'should' => [
+                    ['term' => ['field_1' => 'value 1']],
+                    ['term' => ['field_2' => 222.2]],
+                ],
+            ],
+        ]);
+    }
+);
+

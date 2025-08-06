@@ -45,3 +45,27 @@ test(
         ]);
     }
 );
+
+test(
+    'ShouldQuery−＞term（）は、minimum_should_match を省略可能であり、省略した場合は含まれないこと',
+    function () {
+        /** @var ShouldQuery $should */
+        $should = app(ShouldQuery::class);
+
+        $result = $should
+            ->term('field_1', 'value 1')
+            ->term('field_2', 222.2)
+            ->term('field_3', true)
+            // ->minimumShouldMatch(2)
+            ->toArray();
+
+        expect($result)->toBe([
+            'should' => [
+                ['term' => ['field_1' => 'value 1']],
+                ['term' => ['field_2' => 222.2]],
+                ['term' => ['field_3' => true]],
+            ],
+            // 'minimum_should_match' => 2,
+        ]);
+    }
+);

@@ -10,6 +10,10 @@ final class MustQuery
 
     private array $matches = [];
 
+    public function __construct(
+        private readonly bool $belongsToBoolQuery = false,
+    ) {}
+
     public function term(
         string $fieldName,
         mixed $value,
@@ -38,7 +42,7 @@ final class MustQuery
 
     public function toArray(): array
     {
-        $result = [
+        $must = [
             'must' => (function () {
                 if (count($this->terms) >= 1) {
                     return $this->terms;
@@ -51,6 +55,14 @@ final class MustQuery
                 return Nothing::make();
             })(),
         ];
+
+        $result = match ($this->belongsToBoolQuery) {
+            true => [
+                'bool' => $must,
+            ],
+
+            default => $must,
+        };
 
         return app(UnsetNothingKeyInArray::class)->execute(
             $result

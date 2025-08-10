@@ -43,3 +43,28 @@ test(
         ]);
     }
 );
+
+test(
+    'FilterQuery のコンストラクタに belongsToBoolQuery：true を指定すると bool というキー名にラッピングされた値が組み立てられること',
+    function () {
+        /** @var FilterQuery $filter */
+        $filter = app(
+            FilterQuery::class,
+            belongsToBoolQuery: true,
+        );
+
+        $result = $filter
+            ->term('field_1', 'value 111')
+            ->term('field_2', 222.2)
+            ->toArray();
+
+        expect($result)->toBe([
+            'bool' => [
+                'filter' => [
+                    ['term' => ['field_1' => 'value 111']],
+                    ['term' => ['field_2' => 222.2]],
+                ],
+            ],
+        ]);
+    }
+);

@@ -12,10 +12,6 @@ final class ShouldQuery
 
     private ?int $minimumMatch = null;
 
-    public function __construct(
-        private readonly bool $belongsToBoolQuery = false,
-    ) {}
-
     public function term(
         string $fieldName,
         mixed $value,
@@ -68,16 +64,8 @@ final class ShouldQuery
             'minimum_should_match' => $this->minimumMatch ?? Nothing::make(),
         ];
 
-        $result = match ($this->belongsToBoolQuery) {
-            true => [
-                'bool' => $should,
-            ],
-
-            default => $should,
-        };
-
         return app(UnsetNothingKeyInArray::class)->execute(
-            $result
+            $should
         );
     }
 }

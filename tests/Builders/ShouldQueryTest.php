@@ -1,7 +1,6 @@
 <?php
 
 use Kiyonori\ElasticsearchFluentQueryBuilder\Builders\ShouldQuery;
-use Kiyonori\ElasticsearchFluentQueryBuilder\Enums\QueryTypeEnum;
 
 test(
     'ShouldQuery−＞term（）は、意図したクエリの形を組み立てること',
@@ -72,12 +71,12 @@ test(
 );
 
 test(
-    'ShouldQuery のコンストラクタに QueryTypeEnum::BOOL を指定すると bool というキー名にラッピングされた値が組み立てられること',
+    'ShouldQuery のコンストラクタに belongsToBoolQuery：true を指定すると bool というキー名にラッピングされた値が組み立てられること',
     function () {
         /** @var ShouldQuery $should */
         $should = app(
             ShouldQuery::class,
-            QueryTypeEnum::BOOL,
+            belongsToBoolQuery: true,
         );
 
         $result = $should

@@ -43,3 +43,28 @@ test(
         ]);
     }
 );
+
+test(
+    'MustNotQuery のコンストラクタに belongsToBoolQuery：true を指定すると bool というキー名にラッピングされた値が組み立てられること',
+    function () {
+        /** @var MustNotQuery $mustNot */
+        $mustNot = app(
+            MustNotQuery::class,
+            belongsToBoolQuery: true,
+        );
+
+        $result = $mustNot
+            ->term('field_1', 'value 111')
+            ->term('field_2', 222.2)
+            ->toArray();
+
+        expect($result)->toBe([
+            'bool' => [
+                'must_not' => [
+                    ['term' => ['field_1' => 'value 111']],
+                    ['term' => ['field_2' => 222.2]],
+                ],
+            ],
+        ]);
+    }
+);

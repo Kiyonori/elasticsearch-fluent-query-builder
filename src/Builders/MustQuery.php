@@ -2,70 +2,27 @@
 
 namespace Kiyonori\ElasticsearchFluentQueryBuilder\Builders;
 
-use Kiyonori\ElasticsearchFluentQueryBuilder\Values\Nothing;
+use Closure;
 
 final class MustQuery
 {
-    private array $terms = [];
+    private array $bools = [];
 
-    private array $matches = [];
-
-    public function __construct(
-        private readonly bool $belongsToBoolQuery = false,
-    ) {}
-
-    public function term(
-        string $fieldName,
-        mixed $value,
+    public function bool(
+        Closure $callback,
     ): self {
-        $this->terms[] = [
-            'term' => [
-                $fieldName => $value,
-            ],
-        ];
+        /** @var Fluent $fluent */
+        $fluent = app(Fluent::class);
 
-        return $this;
-    }
+        $callback($fluent);
 
-    public function match(
-        string $fieldName,
-        mixed $value,
-    ): self {
-        $this->matches[] = [
-            'match' => [
-                $fieldName => $value,
-            ],
-        ];
+        $this->bools['bool'] = $fluent->toArray();
 
         return $this;
     }
 
     public function toArray(): array
     {
-        $must = [
-            'must' => (function () {
-                if (count($this->terms) >= 1) {
-                    return $this->terms;
-                }
-
-                if (count($this->matches) >= 1) {
-                    return $this->matches;
-                }
-
-                return Nothing::make();
-            })(),
-        ];
-
-        $result = match ($this->belongsToBoolQuery) {
-            true => [
-                'bool' => $must,
-            ],
-
-            default => $must,
-        };
-
-        return app(UnsetNothingKeyInArray::class)->execute(
-            $result
-        );
+        return $this->bools;
     }
 }

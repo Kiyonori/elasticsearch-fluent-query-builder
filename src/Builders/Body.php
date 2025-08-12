@@ -11,34 +11,65 @@ final class Body
 {
     private array $query = [];
 
+    private ?int $from = null;
+
+    private ?int $size = null;
+
+    private array $sorts = [];
+
+    private array $searchAfters = [];
+
     public static function query(
-        Closure $callback,
+        ?Closure $callback = null,
     ): self {
+        $instance = new self;
+
+        if ($callback === null) {
+            return $instance;
+        }
+
         /** @var Query $query */
         $query = app(Query::class);
 
         $callback($query);
-
-        $instance = new self;
 
         $instance->query = $query->toArray();
 
         return $instance;
     }
 
-    public function from(): self
+    public function from(int $offset): self
     {
-        // TODO Implements...
+        $this->from = $offset;
+
+        return $this;
     }
 
-    public function sort(): self
-    {
-        // TODO Implements...
+    public function sort(
+        string $fieldName,
+        string $direction,
+    ): self {
+        $this->sorts[] = [
+            $fieldName => [
+                'order' => $direction,
+            ],
+        ];
+
+        return $this;
     }
 
-    public function searchAfter(): self
+    public function size(int $size): self
     {
-        // TODO Implements...
+        $this->size = $size;
+
+        return $this;
+    }
+
+    public function searchAfter(int $searchAfter): self
+    {
+        $this->searchAfters[] = $searchAfter;
+
+        return $this;
     }
 
     public function toArray(): array

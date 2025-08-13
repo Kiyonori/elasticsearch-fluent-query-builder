@@ -75,14 +75,18 @@ final class Body
 
     public function toArray(): array
     {
-        $query = app(UnsetNothingKeyInArray::class)->execute(
+        $params = app(UnsetNothingKeyInArray::class)->execute(
             [
-                'query' => $this->query ?: Nothing::make(),
+                'query'        => $this->query ?: Nothing::make(),
+                'from'         => $this->from ?? Nothing::make(),
+                'size'         => $this->size ?? Nothing::make(),
+                'sort'         => $this->sorts ?: Nothing::make(),
+                'search_after' => $this->searchAfters ?: Nothing::make(),
             ],
         );
 
         return [
-            'body' => $query,
+            'body' => $params,
         ];
     }
 }

@@ -3,6 +3,7 @@
 namespace Kiyonori\ElasticsearchFluentQueryBuilder\Builders;
 
 use Closure;
+use Kiyonori\ElasticsearchFluentQueryBuilder\Values\Nothing;
 
 /**
  * Elasticsearch DSL root.
@@ -74,10 +75,14 @@ final class Body
 
     public function toArray(): array
     {
-        return [
-            'body' => [
-                'query' => $this->query,
+        $query = app(UnsetNothingKeyInArray::class)->execute(
+            [
+                'query' => $this->query ?: Nothing::make(),
             ],
+        );
+
+        return [
+            'body' => $query,
         ];
     }
 }

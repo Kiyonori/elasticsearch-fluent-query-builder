@@ -56,4 +56,17 @@ test(
     }
 );
 
-// GetFistParamClassNameInClosure を使うことで、クロージャに複数の引数がある場合 null が返ってくること
+test(
+    'GetFistParamClassNameInClosure を使うことで、クロージャに複数の引数がある場合 null が返ってくること',
+    function () {
+        /** @var GetFistParamClassNameInClosure $getFistParamClassNameInClosure */
+        $getFistParamClassNameInClosure = app(GetFistParamClassNameInClosure::class);
+
+        $className = $getFistParamClassNameInClosure->execute(
+            function (stdClass $stdClass, Query $query) {}
+        );
+
+        expect($className)
+            ->toBeNull();
+    }
+);

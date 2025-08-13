@@ -3,8 +3,9 @@
 namespace Kiyonori\ElasticsearchFluentQueryBuilder\Builders;
 
 use Closure;
+use Kiyonori\ElasticsearchFluentQueryBuilder\Contracts\Arrayable;
 
-final class Fluent
+final class Fluent implements Arrayable
 {
     private array $bools = [];
 

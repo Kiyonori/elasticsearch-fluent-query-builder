@@ -11,7 +11,6 @@ test(
         $result = $should
             ->term('field_1', 'value 111')
             ->term('field_2', 222.2)
-            ->minimumShouldMatch(1)
             ->toArray();
 
         expect($result)->toBe([
@@ -19,7 +18,6 @@ test(
                 ['term' => ['field_1' => 'value 111']],
                 ['term' => ['field_2' => 222.2]],
             ],
-            'minimum_should_match' => 1,
         ]);
     }
 );

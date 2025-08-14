@@ -4,7 +4,7 @@ namespace Kiyonori\ElasticsearchFluentQueryBuilder\Builders;
 
 use Closure;
 use Kiyonori\ElasticsearchFluentQueryBuilder\Contracts\Arrayable;
-use Kiyonori\ElasticsearchFluentQueryBuilder\GetFistParamClassNameInClosure;
+use Kiyonori\ElasticsearchFluentQueryBuilder\GetFirstParamClassNameInClosure;
 use Kiyonori\ElasticsearchFluentQueryBuilder\Values\Nothing;
 
 final class MustQuery implements Arrayable
@@ -16,7 +16,7 @@ final class MustQuery implements Arrayable
         ?int $minimumShouldMatch = null,
     ): self {
         /** @var ?string $classFqn */
-        $classFqn = app(GetFistParamClassNameInClosure::class)
+        $classFqn = app(GetFirstParamClassNameInClosure::class)
             ->execute($callback);
 
         if ($classFqn === null) {

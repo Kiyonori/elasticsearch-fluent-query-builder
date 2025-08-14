@@ -43,3 +43,29 @@ test(
         ]);
     }
 );
+
+test(
+    'ShouldQuery-＞term（）-＞match（）を併用した場合、意図したクエリの形を組み立てること',
+    function () {
+        /** @var ShouldQuery $should */
+        $should = app(ShouldQuery::class);
+
+        $result = $should
+            ->term('field_1', 'value 111')
+            ->term('field_2', 222.2)
+            ->match('field_3', 'value 1')
+            ->match('field_4', 222.2)
+            ->match('field_5', true)
+            ->toArray();
+
+        expect($result)->toBe([
+            'should' => [
+                ['term' => ['field_1' => 'value 111']],
+                ['term'  => ['field_2' => 222.2]],
+                ['match' => ['field_3' => 'value 1']],
+                ['match' => ['field_4' => 222.2]],
+                ['match' => ['field_5' => true]],
+            ],
+        ]);
+    }
+);

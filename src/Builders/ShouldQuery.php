@@ -2,15 +2,14 @@
 
 namespace Kiyonori\ElasticsearchFluentQueryBuilder\Builders;
 
+use Kiyonori\ElasticsearchFluentQueryBuilder\Contracts\Arrayable;
 use Kiyonori\ElasticsearchFluentQueryBuilder\Values\Nothing;
 
-final class ShouldQuery
+final class ShouldQuery implements Arrayable
 {
     private array $terms = [];
 
     private array $matches = [];
-
-    private ?int $minimumMatch = null;
 
     public function term(
         string $fieldName,
@@ -38,14 +37,6 @@ final class ShouldQuery
         return $this;
     }
 
-    public function minimumShouldMatch(
-        int $minimumMatch,
-    ): self {
-        $this->minimumMatch = $minimumMatch;
-
-        return $this;
-    }
-
     public function toArray(): array
     {
         $should = [
@@ -60,8 +51,6 @@ final class ShouldQuery
 
                 return Nothing::make();
             })(),
-
-            'minimum_should_match' => $this->minimumMatch ?? Nothing::make(),
         ];
 
         return app(UnsetNothingKeyInArray::class)->execute(

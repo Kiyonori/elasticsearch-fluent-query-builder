@@ -3,26 +3,54 @@
 namespace Kiyonori\ElasticsearchFluentQueryBuilder\Builders;
 
 use Closure;
+use Kiyonori\ElasticsearchFluentQueryBuilder\Contracts\Arrayable;
+use Kiyonori\ElasticsearchFluentQueryBuilder\GetFistParamClassNameInClosure;
+use Kiyonori\ElasticsearchFluentQueryBuilder\Values\Nothing;
 
-final class MustQuery
+final class MustQuery implements Arrayable
 {
-    private array $bools = [];
+    private array $bool = [];
+
+    private ?int $minimumShouldMatch = null;
 
     public function bool(
         Closure $callback,
+        ?int $minimumShouldMatch = null,
     ): self {
-        /** @var Fluent $fluent */
-        $fluent = app(Fluent::class);
+        $this->minimumShouldMatch = $minimumShouldMatch;
 
-        $callback($fluent);
+        /** @var ?string $classFqn */
+        $classFqn = app(GetFistParamClassNameInClosure::class)
+            ->execute($callback);
 
-        $this->bools['bool'] = $fluent->toArray();
+        if ($classFqn === null) {
+            return $this;
+        }
+
+        /** @var Arrayable|object $instance */
+        $instance = app($classFqn);
+
+        $isArrayable = $instance instanceof Arrayable;
+
+        if ($isArrayable === false) {
+            return $this;
+        }
+
+        $callback($instance);
+
+        $this->bool = $instance->toArray();
 
         return $this;
     }
 
     public function toArray(): array
     {
-        return $this->bools;
+        return app(UnsetNothingKeyInArray::class)->execute(
+            $this->bool
+            +
+            [
+                'minimum_should_match' => $this->minimumShouldMatch ?? Nothing::make(),
+            ]
+        );
     }
 }

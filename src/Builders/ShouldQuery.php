@@ -39,22 +39,13 @@ final class ShouldQuery implements Arrayable
 
     public function toArray(): array
     {
-        $should = [
-            'should' => (function () {
-                if (count($this->terms) >= 1) {
-                    return $this->terms;
-                }
-
-                if (count($this->matches) >= 1) {
-                    return $this->matches;
-                }
-
-                return Nothing::make();
-            })(),
-        ];
+        $internal = array_merge(
+            $this->terms,
+            $this->matches,
+        ) ?: Nothing::make();
 
         return app(UnsetNothingKeyInArray::class)->execute(
-            $should
+            ['should' => $internal]
         );
     }
 }

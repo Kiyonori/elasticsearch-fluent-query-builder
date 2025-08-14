@@ -6,7 +6,7 @@ use Closure;
 use ReflectionException;
 use ReflectionFunction;
 
-final readonly class GetFistParamClassNameInClosure
+final readonly class GetFirstParamClassNameInClosure
 {
     /**
      * @throws ReflectionException

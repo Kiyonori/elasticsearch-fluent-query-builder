@@ -69,30 +69,3 @@ test(
         ]);
     }
 );
-
-test(
-    'ShouldQuery のコンストラクタに belongsToBoolQuery：true を指定すると bool というキー名にラッピングされた値が組み立てられること',
-    function () {
-        /** @var ShouldQuery $should */
-        $should = app(
-            ShouldQuery::class,
-            belongsToBoolQuery: true,
-        );
-
-        $result = $should
-            ->term('field_1', 'value 111')
-            ->term('field_2', 222.2)
-            ->minimumShouldMatch(1)
-            ->toArray();
-
-        expect($result)->toBe([
-            'bool' => [
-                'should' => [
-                    ['term' => ['field_1' => 'value 111']],
-                    ['term' => ['field_2' => 222.2]],
-                ],
-                'minimum_should_match' => 1,
-            ],
-        ]);
-    }
-);

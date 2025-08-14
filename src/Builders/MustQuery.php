@@ -9,16 +9,12 @@ use Kiyonori\ElasticsearchFluentQueryBuilder\Values\Nothing;
 
 final class MustQuery implements Arrayable
 {
-    private array $bool = [];
-
-    private ?int $minimumShouldMatch = null;
+    private ?array $internal = [];
 
     public function bool(
         Closure $callback,
         ?int $minimumShouldMatch = null,
     ): self {
-        $this->minimumShouldMatch = $minimumShouldMatch;
-
         /** @var ?string $classFqn */
         $classFqn = app(GetFistParamClassNameInClosure::class)
             ->execute($callback);
@@ -38,7 +34,11 @@ final class MustQuery implements Arrayable
 
         $callback($instance);
 
-        $this->bool = $instance->toArray();
+        $this->internal[] = $instance->toArray()
+            +
+            [
+                'minimum_should_match' => $minimumShouldMatch ?? Nothing::make(),
+            ];
 
         return $this;
     }
@@ -46,11 +46,7 @@ final class MustQuery implements Arrayable
     public function toArray(): array
     {
         return app(UnsetNothingKeyInArray::class)->execute(
-            $this->bool
-            +
-            [
-                'minimum_should_match' => $this->minimumShouldMatch ?? Nothing::make(),
-            ]
+            $this->internal,
         );
     }
 }

@@ -4,7 +4,7 @@ namespace Kiyonori\ElasticsearchFluentQueryBuilder\Builders;
 
 use Closure;
 use Kiyonori\ElasticsearchFluentQueryBuilder\Contracts\Arrayable;
-use Kiyonori\ElasticsearchFluentQueryBuilder\GetFistParamClassNameInClosure;
+use Kiyonori\ElasticsearchFluentQueryBuilder\GetFirstParamClassNameInClosure;
 use ReflectionException;
 
 final class Query implements Arrayable
@@ -18,7 +18,7 @@ final class Query implements Arrayable
         Closure $callback,
     ): self {
         /** @var ?string $classFqn */
-        $classFqn = app(GetFistParamClassNameInClosure::class)
+        $classFqn = app(GetFirstParamClassNameInClosure::class)
             ->execute($callback);
 
         if ($classFqn === null) {

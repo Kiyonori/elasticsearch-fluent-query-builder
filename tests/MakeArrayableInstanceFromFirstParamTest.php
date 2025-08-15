@@ -14,3 +14,27 @@ test(
             ->toBeInstanceOf(ShouldQuery::class);
     }
 );
+
+test(
+    'クロージャの第一引数に渡した型が Arrayable でない場合、null が返ってくること',
+    function () {
+        $result = app(MakeArrayableInstanceFromFirstParam::class)->execute(
+            function (stdClass $std) {}
+        );
+
+        expect($result)
+            ->toBeNull();
+    }
+);
+
+test(
+    'クロージャの第一引数に何も渡さなかった場合、null が返ってくること',
+    function () {
+        $result = app(MakeArrayableInstanceFromFirstParam::class)->execute(
+            function () {}
+        );
+
+        expect($result)
+            ->toBeNull();
+    }
+);

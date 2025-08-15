@@ -43,6 +43,45 @@ final class MustQuery implements Arrayable
         return $this;
     }
 
+    public function term(
+        string $fieldName,
+        mixed $value,
+    ): self {
+        $this->internal['must'][] = [
+            'term' => [$fieldName => $value],
+        ];
+
+        return $this;
+    }
+
+    public function match(
+        string $fieldName,
+        mixed $value,
+    ): self {
+        $this->internal['must'][] = [
+            'match' => [$fieldName => $value],
+        ];
+
+        return $this;
+    }
+
+    public function range(
+        string $fieldName,
+        mixed $gte = null,
+        mixed $lte = null,
+    ): self {
+        $this->internal['must'][] = [
+            'range' => [
+                $fieldName => [
+                    'gte' => $gte ?? Nothing::make(),
+                    'lte' => $lte ?? Nothing::make(),
+                ],
+            ],
+        ];
+
+        return $this;
+    }
+
     public function toArray(): array
     {
         return app(UnsetNothingKeyInArray::class)->execute(

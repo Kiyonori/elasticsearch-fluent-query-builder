@@ -12,8 +12,12 @@ final readonly class GetFirstParamClassNameInClosure
      * @throws ReflectionException
      */
     public function execute(
-        Closure $callback,
+        ?Closure $callback,
     ): ?string {
+        if ($callback === null) {
+            return null;
+        }
+
         $reflection = new ReflectionFunction($callback);
 
         if ($reflection->getNumberOfParameters() !== 1) {

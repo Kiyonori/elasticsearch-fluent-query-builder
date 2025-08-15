@@ -38,3 +38,14 @@ test(
             ->toBeNull();
     }
 );
+
+test(
+    'クロージャすら渡さなかった場合、null が返ってくること',
+    function () {
+        $result = app(MakeArrayableInstanceFromFirstParam::class)
+            ->execute();
+
+        expect($result)
+            ->toBeNull();
+    }
+);

@@ -6,8 +6,7 @@ use Kiyonori\ElasticsearchFluentQueryBuilder\Builders\ShouldQuery;
 test(
     'MustQuery の bool メソッドが正しく機能すること',
     function () {
-        /** @var MustQuery $must
-         */
+        /** @var MustQuery $must */
         $must = app(MustQuery::class);
 
         $result = $must

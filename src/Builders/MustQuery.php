@@ -4,41 +4,34 @@ namespace Kiyonori\ElasticsearchFluentQueryBuilder\Builders;
 
 use Closure;
 use Kiyonori\ElasticsearchFluentQueryBuilder\Contracts\Arrayable;
-use Kiyonori\ElasticsearchFluentQueryBuilder\GetFirstParamClassNameInClosure;
+use Kiyonori\ElasticsearchFluentQueryBuilder\MakeArrayableInstanceFromFirstParam;
 use Kiyonori\ElasticsearchFluentQueryBuilder\Values\Nothing;
 
 final class MustQuery implements Arrayable
 {
-    private ?array $internal = [];
+    private array $internal = [];
 
     public function bool(
         Closure $callback,
         ?int $minimumShouldMatch = null,
     ): self {
-        /** @var ?string $classFqn */
-        $classFqn = app(GetFirstParamClassNameInClosure::class)
+        /** @var ?Arrayable $arrayableInstance */
+        $arrayableInstance = app(MakeArrayableInstanceFromFirstParam::class)
             ->execute($callback);
 
-        if ($classFqn === null) {
+        if ($arrayableInstance === false) {
             return $this;
         }
 
-        /** @var Arrayable|object $instance */
-        $instance = app($classFqn);
+        $callback($arrayableInstance);
 
-        $isArrayable = $instance instanceof Arrayable;
-
-        if ($isArrayable === false) {
-            return $this;
-        }
-
-        $callback($instance);
-
-        $this->internal[] = $instance->toArray()
-            +
-            [
-                'minimum_should_match' => $minimumShouldMatch ?? Nothing::make(),
-            ];
+        $this->internal['must'][] = [
+            'bool' => $arrayableInstance->toArray()
+                +
+                [
+                    'minimum_should_match' => $minimumShouldMatch ?? Nothing::make(),
+                ],
+        ];
 
         return $this;
     }

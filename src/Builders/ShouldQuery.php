@@ -2,20 +2,45 @@
 
 namespace Kiyonori\ElasticsearchFluentQueryBuilder\Builders;
 
+use Closure;
 use Kiyonori\ElasticsearchFluentQueryBuilder\Contracts\Arrayable;
+use Kiyonori\ElasticsearchFluentQueryBuilder\MakeArrayableInstanceFromFirstParam;
 use Kiyonori\ElasticsearchFluentQueryBuilder\Values\Nothing;
 
 final class ShouldQuery implements Arrayable
 {
-    private array $terms = [];
+    private array $internal = [];
 
-    private array $matches = [];
+    public function bool(
+        Closure $callback,
+        ?int $minimumShouldMatch = null,
+    ): self {
+        /** @var ?Arrayable $arrayableInstance */
+        $arrayableInstance = app(MakeArrayableInstanceFromFirstParam::class)
+            ->execute($callback);
+
+        if ($arrayableInstance === false) {
+            return $this;
+        }
+
+        $callback($arrayableInstance);
+
+        $this->internal['should'][] = [
+            'bool' => $arrayableInstance->toArray()
+                +
+                [
+                    'minimum_should_match' => $minimumShouldMatch ?? Nothing::make(),
+                ],
+        ];
+
+        return $this;
+    }
 
     public function term(
         string $fieldName,
         mixed $value,
     ): self {
-        $this->terms[] = [
+        $this->internal['should'][] = [
             'term' => [
                 $fieldName => $value,
             ],
@@ -28,7 +53,7 @@ final class ShouldQuery implements Arrayable
         string $fieldName,
         mixed $value,
     ): self {
-        $this->matches[] = [
+        $this->internal['should'][] = [
             'match' => [
                 $fieldName => $value,
             ],
@@ -37,15 +62,27 @@ final class ShouldQuery implements Arrayable
         return $this;
     }
 
+    public function range(
+        string $fieldName,
+        mixed $gte = null,
+        mixed $lte = null,
+    ): self {
+        $this->internal['should'][] = [
+            'range' => [
+                $fieldName => [
+                    'gte' => $gte ?? Nothing::make(),
+                    'lte' => $lte ?? Nothing::make(),
+                ],
+            ],
+        ];
+
+        return $this;
+    }
+
     public function toArray(): array
     {
-        $internal = array_merge(
-            $this->terms,
-            $this->matches,
-        ) ?: Nothing::make();
-
         return app(UnsetNothingKeyInArray::class)->execute(
-            ['should' => $internal]
+            $this->internal,
         );
     }
 }

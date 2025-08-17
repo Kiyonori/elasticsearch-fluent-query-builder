@@ -3,6 +3,7 @@
 use Kiyonori\ElasticsearchFluentQueryBuilder\Builders\Body;
 use Kiyonori\ElasticsearchFluentQueryBuilder\Builders\BoolQuery;
 use Kiyonori\ElasticsearchFluentQueryBuilder\Builders\MustQuery;
+use Kiyonori\ElasticsearchFluentQueryBuilder\Builders\ShouldQuery;
 
 test(
     'Body インスタンスの toArray メソッドは意図した形の array を出力すること その1',
@@ -100,6 +101,46 @@ test(
                                 ],
                             ],
                         ],
+                    ],
+                ],
+            ],
+        ]);
+    }
+);
+
+test(
+    'Body インスタンスの toArray メソッドは意図した形の array を出力すること その4',
+    function () {
+        $result = Body::query(
+            function (BoolQuery $bool) {
+                $bool(
+                    function (ShouldQuery $should) {
+                        $should
+                            ->match('field_1', 'value 1')
+                            ->match('field_2', 222.2)
+                            ->match('field_3', true);
+                    },
+                    minimumShouldMatch: 1,
+                );
+            }
+        )->toArray();
+
+        expect($result)->toBe([
+            'body' => [
+                'query' => [
+                    'bool' => [
+                        'should' => [
+                            [
+                                'match' => ['field_1' => 'value 1'],
+                            ],
+                            [
+                                'match' => ['field_2' => 222.2],
+                            ],
+                            [
+                                'match' => ['field_3' => true],
+                            ],
+                        ],
+                        'minimum_should_match' => 1,
                     ],
                 ],
             ],

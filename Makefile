@@ -1,3 +1,4 @@
+CONTAINER_NAME=php
 .PHONY: up
 
 up:
@@ -12,4 +13,10 @@ up:
 	docker compose up -d
 
 test:
-	docker-compose exec php vendor/bin/pest
+	docker compose exec -it $(CONTAINER_NAME) ./vendor/bin/pest $(filter-out $@,$(MAKECMDGOALS))
+
+pest:
+	docker compose exec -it $(CONTAINER_NAME) ./vendor/bin/pest $(filter-out $@,$(MAKECMDGOALS))
+
+%:
+	@:

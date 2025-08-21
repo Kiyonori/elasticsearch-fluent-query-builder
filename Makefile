@@ -13,10 +13,13 @@ up:
 	docker compose up -d
 
 test:
-	docker compose exec -it $(CONTAINER_NAME) ./vendor/bin/pest $(filter-out $@,$(MAKECMDGOALS))
+	docker compose exec $(CONTAINER_NAME) ./vendor/bin/pest $(filter-out $@,$(MAKECMDGOALS))
 
 pest:
-	docker compose exec -it $(CONTAINER_NAME) ./vendor/bin/pest $(filter-out $@,$(MAKECMDGOALS))
+	docker compose exec $(CONTAINER_NAME) ./vendor/bin/pest $(filter-out $@,$(MAKECMDGOALS))
+
+pint:
+	docker compose exec $(CONTAINER_NAME) ./vendor/bin/pint $(filter-out $@,$(MAKECMDGOALS))
 
 %:
 	@:

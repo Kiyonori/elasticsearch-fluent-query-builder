@@ -16,7 +16,7 @@ test:
 	docker-compose exec php vendor/bin/pest
 
 pint:
-	docker compose exec -it $(CONTAINER_NAME) ./vendor/bin/pint $(filter-out $@,$(MAKECMDGOALS))
+	docker compose exec $(CONTAINER_NAME) ./vendor/bin/pint $(filter-out $@,$(MAKECMDGOALS))
 
 %:
 	@:

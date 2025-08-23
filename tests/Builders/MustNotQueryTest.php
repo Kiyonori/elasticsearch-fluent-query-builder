@@ -74,3 +74,55 @@ test(
         ]);
     }
 );
+
+test(
+    'MustNotQuery の term，match，range メソッドが正しく機能すること',
+    function () {
+        /** @var MustNotQuery $mustNot */
+        $mustNot = app(MustNotQuery::class);
+
+        $result = $mustNot
+            ->term('chat_id', 'u968edd043c46262efe69ef21ad458c6d')
+            ->term('type', 1)
+            ->match('content', 'おはよう')
+            ->match('content', '今度')
+            ->range(
+                fieldName: 'created_time',
+                gte: 1736925752798,
+            )
+            ->range('id', 333, 555)
+            ->toArray();
+
+        expect($result)->toBe([
+            'must_not' => [
+                [
+                    'term' => ['chat_id' => 'u968edd043c46262efe69ef21ad458c6d'],
+                ],
+                [
+                    'term' => ['type' => 1],
+                ],
+                [
+                    'match' => ['content' => 'おはよう'],
+                ],
+                [
+                    'match' => ['content' => '今度'],
+                ],
+                [
+                    'range' => [
+                        'created_time' => [
+                            'gte' => 1736925752798,
+                        ],
+                    ],
+                ],
+                [
+                    'range' => [
+                        'id' => [
+                            'gte' => 333,
+                            'lte' => 555,
+                        ],
+                    ],
+                ],
+            ],
+        ]);
+    }
+);

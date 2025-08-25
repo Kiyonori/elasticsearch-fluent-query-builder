@@ -4,7 +4,7 @@ namespace Kiyonori\ElasticsearchFluentQueryBuilder\Builders;
 
 use Closure;
 use Kiyonori\ElasticsearchFluentQueryBuilder\Contracts\Arrayable;
-use Kiyonori\ElasticsearchFluentQueryBuilder\GetFirstParamClassNameInClosure;
+use Kiyonori\ElasticsearchFluentQueryBuilder\MakeArrayableInstanceFromFirstParam;
 use ReflectionException;
 
 final class Query implements Arrayable
@@ -17,26 +17,17 @@ final class Query implements Arrayable
     public function bool(
         Closure $callback,
     ): self {
-        /** @var ?string $classFqn */
-        $classFqn = app(GetFirstParamClassNameInClosure::class)
+        /** @var ?Arrayable $arrayableInstance */
+        $arrayableInstance = app(MakeArrayableInstanceFromFirstParam::class)
             ->execute($callback);
 
-        if ($classFqn === null) {
+        if ($arrayableInstance === null) {
             return $this;
         }
 
-        /** @var Arrayable $instance */
-        $instance = app($classFqn);
+        $callback($arrayableInstance);
 
-        $isArrayable = $instance instanceof Arrayable;
-
-        if ($isArrayable === false) {
-            return $this;
-        }
-
-        $callback($instance);
-
-        $this->bool = $instance->toArray();
+        $this->bool = $arrayableInstance->toArray();
 
         return $this;
     }

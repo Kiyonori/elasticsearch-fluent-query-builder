@@ -4,7 +4,7 @@ namespace Kiyonori\ElasticsearchFluentQueryBuilder\Builders;
 
 use Closure;
 use Kiyonori\ElasticsearchFluentQueryBuilder\Contracts\Arrayable;
-use Kiyonori\ElasticsearchFluentQueryBuilder\GetFirstParamClassNameInClosure;
+use Kiyonori\ElasticsearchFluentQueryBuilder\MakeArrayableInstanceFromFirstParam;
 use Kiyonori\ElasticsearchFluentQueryBuilder\Values\Nothing;
 
 /**
@@ -25,28 +25,19 @@ final class Body
     public static function query(
         ?Closure $callback = null,
     ): self {
-        /** @var ?string $classFqn */
-        $classFqn = app(GetFirstParamClassNameInClosure::class)
+        /** @var ?Arrayable $arrayableInstance */
+        $arrayableInstance = app(MakeArrayableInstanceFromFirstParam::class)
             ->execute($callback);
 
-        if ($classFqn === null) {
+        if ($arrayableInstance === null) {
             return new self;
         }
 
-        /** @var Arrayable $instance */
-        $instance = app($classFqn);
-
-        $isArrayable = $instance instanceof Arrayable;
-
-        if ($isArrayable === false) {
-            return new self;
-        }
-
-        $callback($instance);
+        $callback($arrayableInstance);
 
         $bodyInstance = new self;
 
-        $bodyInstance->query = $instance->toArray();
+        $bodyInstance->query = $arrayableInstance->toArray();
 
         return $bodyInstance;
     }

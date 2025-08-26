@@ -42,40 +42,46 @@ test(
         expect($result)->toBe([
             'query' => [
                 'bool' => [
-                    [
-                        'should' => [
-                            [
-                                'match' => [
-                                    'field_1' => 'value1',
+                    'must' => [
+                        [
+                            'bool' => [
+                                'should' => [
+                                    [
+                                        'match' => [
+                                            'field_1' => 'value1',
+                                        ],
+                                    ],
+                                    [
+                                        'match' => [
+                                            'field_2' => 'value 2',
+                                        ],
+                                    ],
                                 ],
-                            ],
-                            [
-                                'match' => [
-                                    'field_2' => 'value 2',
-                                ],
-                            ],
-                        ],
-                        'minimum_should_match' => 1,
-                    ],
-                    [
-                        'should' => [
-                            [
-                                'match' => [
-                                    'field_3' => 'value 333',
-                                ],
-                            ],
-                            [
-                                'match' => [
-                                    'field_4' => 'value四',
-                                ],
-                            ],
-                            [
-                                'match' => [
-                                    'field_5' => 'value５',
-                                ],
+                                'minimum_should_match' => 1,
                             ],
                         ],
-                        'minimum_should_match' => 2,
+                        [
+                            'bool' => [
+                                'should' => [
+                                    [
+                                        'match' => [
+                                            'field_3' => 'value 333',
+                                        ],
+                                    ],
+                                    [
+                                        'match' => [
+                                            'field_4' => 'value四',
+                                        ],
+                                    ],
+                                    [
+                                        'match' => [
+                                            'field_5' => 'value５',
+                                        ],
+                                    ],
+                                ],
+                                'minimum_should_match' => 2,
+                            ],
+                        ],
                     ],
                 ],
             ],

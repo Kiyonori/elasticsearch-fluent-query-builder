@@ -19,7 +19,7 @@ final class ShouldQuery implements Arrayable
         $arrayableInstance = app(MakeArrayableInstanceFromFirstParam::class)
             ->execute($callback);
 
-        if ($arrayableInstance === false) {
+        if ($arrayableInstance === null) {
             return $this;
         }
 

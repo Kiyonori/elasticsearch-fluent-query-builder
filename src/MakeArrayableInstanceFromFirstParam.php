@@ -5,6 +5,7 @@ namespace Kiyonori\ElasticsearchFluentQueryBuilder;
 use Closure;
 use Kiyonori\ElasticsearchFluentQueryBuilder\Contracts\Arrayable;
 use ReflectionException;
+use ReflectionFunction;
 
 final readonly class MakeArrayableInstanceFromFirstParam
 {
@@ -18,7 +19,7 @@ final readonly class MakeArrayableInstanceFromFirstParam
             return null;
         }
 
-        $reflection = new \ReflectionFunction($callback);
+        $reflection = new ReflectionFunction($callback);
 
         if ($reflection->getNumberOfParameters() !== 1) {
             return null;

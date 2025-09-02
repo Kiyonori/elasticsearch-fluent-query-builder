@@ -2,6 +2,7 @@
 
 use Kiyonori\ElasticsearchFluentQueryBuilder\Builders\Body;
 use Kiyonori\ElasticsearchFluentQueryBuilder\Builders\BoolQuery;
+use Kiyonori\ElasticsearchFluentQueryBuilder\Builders\Highlight;
 use Kiyonori\ElasticsearchFluentQueryBuilder\Builders\MustQuery;
 use Kiyonori\ElasticsearchFluentQueryBuilder\Builders\ShouldQuery;
 
@@ -141,6 +142,71 @@ test(
                             ],
                         ],
                         'minimum_should_match' => 1,
+                    ],
+                ],
+            ],
+        ]);
+    }
+);
+
+test(
+    'Body インスタンスの toArray メソッドは意図した形の array を出力すること その5',
+    function () {
+        $result = Body::query(
+            function (BoolQuery $bool) {
+                $bool(
+                    function (ShouldQuery $should) {
+                        $should
+                            ->match('content', 'おはよう')
+                            ->match('field_1', 'value 1')
+                            ->term('field_2', 222.2)
+                            ->term('field_3', true);
+                    },
+                    minimumShouldMatch: 1,
+                );
+            })
+            ->highlight(
+                function (Highlight $highlight) {
+                    $highlight
+                        ->field(
+                            fieldName: 'content',
+                            fragmentSize: 150,
+                            numberOfFragments: 3,
+                        )
+                        ->field(
+                            fieldName: 'chat_id',
+                        );
+                }
+            )
+            ->toArray();
+
+        expect($result)->toBe([
+            'body' => [
+                'query' => [
+                    'bool' => [
+                        'should' => [
+                            [
+                                'match' => ['content' => 'おはよう'],
+                            ],
+                            [
+                                'match' => ['field_1' => 'value 1'],
+                            ],
+                            [
+                                'term' => ['field_2' => 222.2],
+                            ],
+                            [
+                                'term' => ['field_3' => true],
+                            ],
+                        ],
+                        'minimum_should_match' => 1,
+                    ],
+                ],
+                'highlight' => [
+                    'fields' => [
+                        'content' => [
+                            'fragment_size'       => 150,
+                            'number_of_fragments' => 3,
+                        ],
                     ],
                 ],
             ],

@@ -213,3 +213,72 @@ test(
         ]);
     }
 );
+
+test(
+    'Body インスタンスの toArray メソッドは意図した形の array を出力すること その6',
+    function () {
+        $result = Body::query(
+            function (BoolQuery $bool) {
+                $bool(
+                    function (ShouldQuery $should) {
+                        $should
+                            ->match('content', 'おはよう')
+                            ->match('field_1', 'value 1')
+                            ->term('field_2', 222.2)
+                            ->term('field_3', true);
+                    },
+                    minimumShouldMatch: 1,
+                );
+            })
+            ->highlight(
+                function (Highlight $highlight) {
+                    $highlight
+                        ->field(
+                            fieldName: 'content',
+                            fragmentSize: 150,
+                            numberOfFragments: 3,
+                        )
+                        ->field(
+                            fieldName: 'chat_id',
+                        )
+                        ->preTags(['<em>'])
+                        ->postTags(['</em>']);
+                }
+            )
+            ->toArray();
+
+        expect($result)->toBe([
+            'body' => [
+                'query' => [
+                    'bool' => [
+                        'should' => [
+                            [
+                                'match' => ['content' => 'おはよう'],
+                            ],
+                            [
+                                'match' => ['field_1' => 'value 1'],
+                            ],
+                            [
+                                'term' => ['field_2' => 222.2],
+                            ],
+                            [
+                                'term' => ['field_3' => true],
+                            ],
+                        ],
+                        'minimum_should_match' => 1,
+                    ],
+                ],
+                'highlight' => [
+                    'fields' => [
+                        'content' => [
+                            'fragment_size'       => 150,
+                            'number_of_fragments' => 3,
+                        ],
+                    ],
+                    'pre_tags'  => ['<em>'],
+                    'post_tags' => ['</em>'],
+                ],
+            ],
+        ]);
+    }
+);

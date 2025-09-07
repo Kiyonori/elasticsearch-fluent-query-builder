@@ -22,6 +22,8 @@ final class Body
 
     private array $searchAfters = [];
 
+    private array $highlight = [];
+
     public static function query(
         ?Closure $callback = null,
     ): self {
@@ -40,6 +42,24 @@ final class Body
         $bodyInstance->query = $arrayableInstance->toArray();
 
         return $bodyInstance;
+    }
+
+    public function highlight(
+        Closure $callback,
+    ): self {
+        /** @var ?Arrayable $arrayableInstance */
+        $arrayableInstance = app(MakeArrayableInstanceFromFirstParam::class)
+            ->execute($callback);
+
+        if ($arrayableInstance === null) {
+            return $this;
+        }
+
+        $callback($arrayableInstance);
+
+        $this->highlight = $arrayableInstance->toArray();
+
+        return $this;
     }
 
     public function from(int $offset): self
@@ -85,6 +105,7 @@ final class Body
                 'size'         => $this->size ?? Nothing::make(),
                 'sort'         => $this->sorts ?: Nothing::make(),
                 'search_after' => $this->searchAfters ?: Nothing::make(),
+                'highlight'    => $this->highlight ?: Nothing::make(),
             ],
         );
 

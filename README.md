@@ -29,3 +29,93 @@ Elasticsearchのクエリビルダーとインデックス・ドキュメント�
 ```bash
 composer require kiyonori/elasticsearch-fluent-query-builder
 ```
+
+## 使用方法
+
+### クエリビルダー
+
+#### 基本的なboolクエリ
+
+```php
+use Kiyonori\ElasticsearchFluentQueryBuilder\Builders\Query;
+use Kiyonori\ElasticsearchFluentQueryBuilder\Builders\MustQuery;
+use Kiyonori\ElasticsearchFluentQueryBuilder\Builders\ShouldQuery;
+
+$query = app(Query::class);
+
+$result = $query
+    ->bool(function (MustQuery $must) {
+        $must
+            ->bool(function (ShouldQuery $should) {
+                $should
+                    ->match('title', 'elasticsearch')
+                    ->match('content', 'search engine');
+            }, minimumShouldMatch: 1)
+            ->term('status', 'published')
+            ->range('created_at', gte: '2024-01-01', lte: '2024-12-31');
+    })
+    ->toArray();
+```
+
+#### 複雑なネストしたクエリ
+
+```php
+$query = app(Query::class);
+
+$result = $query
+    ->bool(function (MustQuery $must) {
+        $must
+            ->bool(function (ShouldQuery $should) {
+                $should
+                    ->match('field_1', 'value1')
+                    ->match('field_2', 'value 2');
+            }, minimumShouldMatch: 1)
+            ->bool(function (ShouldQuery $should) {
+                $should
+                    ->match('field_3', 'value 333')
+                    ->match('field_4', 'value四')
+                    ->match('field_5', 'value５');
+            }, minimumShouldMatch: 2);
+    })
+    ->toArray();
+```
+
+#### 利用可能なクエリタイプ
+
+**MustQuery** - 必須条件:
+
+```php
+$must
+    ->term('field', 'value')
+    ->match('field', 'text')
+    ->range('field', gte: 10, lte: 100)
+    ->bool(function (ShouldQuery $should) { /* ... */ });
+```
+
+**ShouldQuery** - 任意条件:
+
+```php
+$should
+    ->term('field', 'value')
+    ->match('field', 'text')
+    ->range('field', gte: 10, lte: 100)
+    ->bool(function (MustQuery $must) { /* ... */ });
+```
+
+**FilterQuery** - フィルター条件:
+
+```php
+$filter
+    ->term('field', 'value')
+    ->match('field', 'text')
+    ->range('field', gte: 10, lte: 100);
+```
+
+**MustNotQuery** - 除外条件:
+
+```php
+$mustNot
+    ->term('field', 'value')
+    ->match('field', 'text')
+    ->range('field', gte: 10, lte: 100);
+```

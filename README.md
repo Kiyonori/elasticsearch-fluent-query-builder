@@ -119,3 +119,68 @@ $mustNot
     ->match('field', 'text')
     ->range('field', gte: 10, lte: 100);
 ```
+
+### インデックスとドキュメント操作
+
+#### マッピングの適用
+
+```php
+use Kiyonori\ElasticsearchFluentQueryBuilder\ApplyMapping;
+
+// JSONファイルからマッピングを適用（エイリアス付きでゼロダウンタイム）
+$newIndexName = app(ApplyMapping::class)->execute(
+    jsonFilePath: 'path/to/mapping.json'
+);
+```
+
+#### ドキュメントの保存
+
+```php
+use Kiyonori\ElasticsearchFluentQueryBuilder\StoreDocument;
+
+$response = app(StoreDocument::class)->execute(
+    indexName: 'my_index',
+    documentId: 'doc_123',
+    body: [
+        'title' => 'Sample Document',
+        'content' => 'This is a sample document',
+        'created_at' => '2024-01-01T00:00:00Z'
+    ]
+);
+```
+
+#### ドキュメントの取得
+
+```php
+use Kiyonori\ElasticsearchFluentQueryBuilder\GetDocument;
+
+$document = app(GetDocument::class)->execute(
+    indexName: 'my_index',
+    documentId: 'doc_123'
+);
+```
+
+#### インデックスの削除
+
+```php
+use Kiyonori\ElasticsearchFluentQueryBuilder\DeleteIndex;
+
+$deletedIndices = app(DeleteIndex::class)->execute(
+    indexName: 'my_index',
+    suppressNotFoundException: true
+);
+```
+
+#### 一括ドキュメント操作
+
+```php
+use Kiyonori\ElasticsearchFluentQueryBuilder\BulkStoreDocuments;
+
+$response = app(BulkStoreDocuments::class)->execute(
+    indexName: 'my_index',
+    documents: [
+        ['id' => 'doc_1', 'body' => ['title' => 'Document 1']],
+        ['id' => 'doc_2', 'body' => ['title' => 'Document 2']],
+    ]
+);
+```

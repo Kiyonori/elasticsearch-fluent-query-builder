@@ -201,3 +201,28 @@ return [
     'password'         => null,
 ];
 ```
+
+## マッピングJSONファイルの例
+
+```json
+{
+    "index": "my_index",
+    "body": {
+        "mappings": {
+            "properties": {
+                "title": {
+                    "type": "text",
+                    "analyzer": "standard"
+                },
+                "content": {
+                    "type": "text",
+                    "analyzer": "standard"
+                },
+                "created_at": {
+                    "type": "date"
+                }
+            }
+        }
+    }
+}
+```

@@ -237,3 +237,7 @@ make test
 ## ライセンス
 
 このプロジェクトはMITライセンスの下で公開されています。詳細は[LICENSE](LICENSE)ファイルを参照してください。
+
+## 作者
+
+- Kiyonori SAKAI

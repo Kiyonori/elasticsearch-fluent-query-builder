@@ -243,6 +243,16 @@ make test
 - docker コマンドが利用可能であること
 - make コマンドが利用可能であること
 
+### 2. 初回セットアップと起動
+
+```bash
+make up
+```
+
+- 初回は `.env` を自動生成します
+- 起動後、Elasticsearch は `http://localhost:${ELASTICSEARCH_OUTWARD_PORT}` で待ち受けます
+- デフォルトポートは `.env` で指定します（例: `ELASTICSEARCH_OUTWARD_PORT=9200`）
+
 ## ライセンス
 
 このプロジェクトはMITライセンスの下で公開されています。詳細は[LICENSE](LICENSE)ファイルを参照してください。

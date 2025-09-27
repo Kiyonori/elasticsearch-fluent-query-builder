@@ -253,6 +253,26 @@ make up
 - 起動後、Elasticsearch は `http://localhost:${ELASTICSEARCH_OUTWARD_PORT}` で待ち受けます
 - デフォルトポートは `.env` で指定します（例: `ELASTICSEARCH_OUTWARD_PORT=9200`）
 
+### 3. 設定ファイル
+
+接続先は `config/my-elasticsearch.php` で管理します
+
+```php
+<?php
+
+return [
+    'hosts' => [
+        'http://elasticsearch:9200',
+    ],
+    'ssl_verification' => false,
+    'user_name'        => null,
+    'password'         => null,
+];
+```
+
+- `hosts` はコンテナ間通信用のホスト名 `elasticsearch` を利用します
+- ホストOSから疎通確認する場合は `http://localhost:9200` を利用します
+
 ## ライセンス
 
 このプロジェクトはMITライセンスの下で公開されています。詳細は[LICENSE](LICENSE)ファイルを参照してください。

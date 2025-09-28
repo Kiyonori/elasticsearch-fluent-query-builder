@@ -273,6 +273,34 @@ return [
 - `hosts` はコンテナ間通信用のホスト名 `elasticsearch` を利用します
 - ホストOSから疎通確認する場合は `http://localhost:9200` を利用します
 
+### 4. 接続確認
+
+```bash
+curl -s http://localhost:9200/ | jq .
+```
+
+```json
+{
+  "name": "9fe5729c9607",
+  "cluster_name": "docker-cluster",
+  "cluster_uuid": "CRxG1rjBSICWjzoTxh-EWQ",
+  "version": {
+    "number": "8.18.0",
+    "build_flavor": "default",
+    "build_type": "docker",
+    "build_hash": "04e979aa50b657bebd4a0937389308de82c2bdad",
+    "build_date": "2025-04-10T10:09:16.444104780Z",
+    "build_snapshot": false,
+    "lucene_version": "9.12.1",
+    "minimum_wire_compatibility_version": "7.17.0",
+    "minimum_index_compatibility_version": "7.0.0"
+  },
+  "tagline": "You Know, for Search"
+}
+```
+
+上記の JSON が返れば OK です
+
 ## ライセンス
 
 このプロジェクトはMITライセンスの下で公開されています。詳細は[LICENSE](LICENSE)ファイルを参照してください。

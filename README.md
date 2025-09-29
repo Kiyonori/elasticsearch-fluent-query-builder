@@ -301,6 +301,16 @@ curl -s http://localhost:9200/ | jq .
 
 上記の JSON が返れば OK です
 
+### 5. テスト / コード整形の実行
+
+```bash
+# テスト
+make test
+
+# コード整形
+make pint
+```
+
 ## ライセンス
 
 このプロジェクトはMITライセンスの下で公開されています。詳細は[LICENSE](LICENSE)ファイルを参照してください。

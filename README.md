@@ -313,6 +313,10 @@ make pint
 
 ### 6. 開発環境の停止・再起動・クリーンアップ
 
+```bash
+# 停止
+docker compose stop
+
 ## ライセンス
 
 このプロジェクトはMITライセンスの下で公開されています。詳細は[LICENSE](LICENSE)ファイルを参照してください。

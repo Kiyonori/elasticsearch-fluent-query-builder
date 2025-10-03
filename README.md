@@ -319,6 +319,9 @@ docker compose stop
 
 # 再起動
 docker compose restart
+
+# 完全停止と削除（Elasticsearch のボリュームは残ります）
+docker compose down
 ```
 
 ## ライセンス

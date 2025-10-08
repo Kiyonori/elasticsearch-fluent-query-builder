@@ -1,6 +1,12 @@
 {
     "name": "kiyonori/elasticsearch-fluent-query-builder",
     "description": "Elasticsearch Fluent Query Builder.",
+    "keywords": [
+        "elasticsearch",
+        "query-builder",
+        "fluent",
+        "search"
+    ],
     "type": "library",
     "license": "MIT",
     "authors": [

@@ -9,6 +9,10 @@
     ],
     "type": "library",
     "license": "MIT",
+    "support": {
+        "issues": "https://github.com/Kiyonori/elasticsearch-fluent-query-builder/issues",
+        "source": "https://github.com/Kiyonori/elasticsearch-fluent-query-builder"
+    },
     "authors": [
         {
             "name": "Kiyonori SAKAI ❄️",

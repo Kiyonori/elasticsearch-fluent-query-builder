@@ -1,8 +1,18 @@
 {
     "name": "kiyonori/elasticsearch-fluent-query-builder",
     "description": "Elasticsearch Fluent Query Builder.",
+    "keywords": [
+        "elasticsearch",
+        "query-builder",
+        "fluent",
+        "search"
+    ],
     "type": "library",
     "license": "MIT",
+    "support": {
+        "issues": "https://github.com/Kiyonori/elasticsearch-fluent-query-builder/issues",
+        "source": "https://github.com/Kiyonori/elasticsearch-fluent-query-builder"
+    },
     "authors": [
         {
             "name": "Kiyonori SAKAI ❄️",
@@ -38,5 +48,7 @@
         "pestphp/pest": "^3.8",
         "laravel/pint": "^1.24",
         "nunomaduro/phpinsights": "^2.13"
-    }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }

@@ -2,8 +2,14 @@
 
 declare(strict_types=1);
 
+use PhpCsFixer\Fixer\Operator\BinaryOperatorSpacesFixer;
+
 return [
     'preset' => 'default',
+
+    'remove' => [
+        BinaryOperatorSpacesFixer::class,
+    ],
 
     'requirements' => [
         'min-quality' => 85,

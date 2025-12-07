@@ -50,5 +50,12 @@
         "nunomaduro/phpinsights": "^2.13"
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Kiyonori\\ElasticsearchFluentQueryBuilder\\ElasticsearchServiceProvider"
+            ]
+        }
+    }
 }

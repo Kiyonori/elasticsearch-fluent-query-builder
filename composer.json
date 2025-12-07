@@ -24,7 +24,7 @@
             "Kiyonori\\ElasticsearchFluentQueryBuilder\\": "src/"
         },
         "files": [
-            "src/helpers.php"
+            "src/bootstrap.php"
         ]
     },
     "autoload-dev": {

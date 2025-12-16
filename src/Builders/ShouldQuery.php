@@ -62,6 +62,23 @@ final class ShouldQuery implements Arrayable
         return $this;
     }
 
+    /**
+     * @param  array<int, string|int|float|bool>  $fields
+     */
+    public function multiMatch(
+        int|string|float|bool $query,
+        array $fields
+    ): self {
+        $this->internal['should'][] = [
+            'multi_match' => [
+                'query'  => $query,
+                'fields' => $fields,
+            ],
+        ];
+
+        return $this;
+    }
+
     public function range(
         string $fieldName,
         mixed $gte = null,

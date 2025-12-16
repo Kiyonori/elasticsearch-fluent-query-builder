@@ -357,3 +357,105 @@ test(
         ]);
     }
 );
+
+test(
+    'Body インスタンスの toArray メソッドは意図した形の array を出力すること その8',
+    function () {
+        $result = Body::query(
+            function (BoolQuery $bool) {
+                $bool(
+                    function (MustQuery $must) {
+                        $must->bool(
+                            function (ShouldQuery $should) {
+                                $should
+                                    ->multiMatch(
+                                        query: '鈴木',
+                                        fields: [
+                                            'user_street_address.ngram',
+                                            'user_city.ngram',
+                                            'user_last_name.ngram',
+                                            'user_first_name.ngram',
+                                            'user_last_kana_name.ngram',
+                                            'user_first_kana_name.ngram',
+                                            'pet_name.ngram',
+                                        ],
+                                    );
+                            },
+                            minimumShouldMatch: 1,
+                        )->bool(function (ShouldQuery $should) {
+                            $should
+                                ->multiMatch(
+                                    query: '太郎',
+                                    fields: [
+                                        'user_street_address.ngram',
+                                        'user_city.ngram',
+                                        'user_last_name.ngram',
+                                        'user_first_name.ngram',
+                                        'user_last_kana_name.ngram',
+                                        'user_first_kana_name.ngram',
+                                        'pet_name.ngram',
+                                    ],
+                                );
+                        },
+                            minimumShouldMatch: 1,
+                        );
+                    }
+                );
+            })
+            ->toArray();
+
+        expect($result)
+            ->toBe([
+                'body' => [
+                    'query' => [
+                        'bool' => [
+                            'must' => [
+                                [
+                                    'bool' => [
+                                        'should' => [
+                                            [
+                                                'multi_match' => [
+                                                    'query'  => '鈴木',
+                                                    'fields' => [
+                                                        'user_street_address.ngram',
+                                                        'user_city.ngram',
+                                                        'user_last_name.ngram',
+                                                        'user_first_name.ngram',
+                                                        'user_last_kana_name.ngram',
+                                                        'user_first_kana_name.ngram',
+                                                        'pet_name.ngram',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                        'minimum_should_match' => 1,
+                                    ],
+                                ],
+                                [
+                                    'bool' => [
+                                        'should' => [
+                                            [
+                                                'multi_match' => [
+                                                    'query'  => '太郎',
+                                                    'fields' => [
+                                                        'user_street_address.ngram',
+                                                        'user_city.ngram',
+                                                        'user_last_name.ngram',
+                                                        'user_first_name.ngram',
+                                                        'user_last_kana_name.ngram',
+                                                        'user_first_kana_name.ngram',
+                                                        'pet_name.ngram',
+                                                    ],
+                                                ],
+                                            ],
+                                        ],
+                                        'minimum_should_match' => 1,
+                                    ],
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ]);
+    }
+);

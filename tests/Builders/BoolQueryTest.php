@@ -119,3 +119,52 @@ test(
         ]);
     }
 );
+
+test(
+    'BoolQuery の toArray メソッドは意図した形の array を出力すること その3',
+    function () {
+        /** @var BoolQuery $bool */
+        $bool = app(BoolQuery::class);
+
+        $result = $bool(
+            function (ShouldQuery $should) {
+                $should
+                    ->multiMatch(
+                        query: '鈴木',
+                        fields: [
+                            'user_street_address.ngram',
+                            'user_city.ngram',
+                            'user_last_name.ngram',
+                            'user_first_name.ngram',
+                            'user_last_kana_name.ngram',
+                            'user_first_kana_name.ngram',
+                            'pet_name.ngram',
+                        ],
+                    );
+            },
+            minimumShouldMatch: 1,
+        )->toArray();
+
+        expect($result)->toBe([
+            'bool' => [
+                'should' => [
+                    [
+                        'multi_match' => [
+                            'query'  => '鈴木',
+                            'fields' => [
+                                'user_street_address.ngram',
+                                'user_city.ngram',
+                                'user_last_name.ngram',
+                                'user_first_name.ngram',
+                                'user_last_kana_name.ngram',
+                                'user_first_kana_name.ngram',
+                                'pet_name.ngram',
+                            ],
+                        ],
+                    ],
+                ],
+                'minimum_should_match' => 1,
+            ],
+        ]);
+    }
+);
